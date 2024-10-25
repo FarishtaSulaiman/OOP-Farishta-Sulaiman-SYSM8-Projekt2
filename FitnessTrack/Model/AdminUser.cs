@@ -6,7 +6,19 @@ using System.Threading.Tasks;
 
 namespace FitnessTrack.Model
 {
-    internal class AdminUser
+    public class AdminUser : User // har speciella rättigheter som hanterar alla träningspass
     {
+        public AdminUser(string UserName, string Password, string Country, string SecurityQuestion, string SecurityAnswer)
+            : base(UserName, Password, Country, SecurityQuestion, SecurityAnswer)
+        {
+
+        }
+    
+    
+
+        public void ManageAllWorukouts()
+        {
+            // logik för att hantera alla användarnas träningspass 
+        }
     }
 }
