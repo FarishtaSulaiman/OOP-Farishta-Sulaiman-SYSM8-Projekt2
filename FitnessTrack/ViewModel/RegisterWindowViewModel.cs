@@ -27,6 +27,9 @@ namespace FitnessTrack.ViewModel
         {
             _userManager = userManager;
             RegisterCommand = new RelayCommand(Register);
+
+            // Initiera länder (om det behövs)
+            Countries = new ObservableCollection<string> { "Sverige", "Norge", "Danmark", "Finland" };
         }
 
         public void Register(object parameter)
@@ -41,6 +44,9 @@ namespace FitnessTrack.ViewModel
             _userManager.AddUser(newUser);
 
             MessageBox.Show($"Användaren {Username} har registrerats framgångsrikt!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+
+            // Stäng registerfönstret
+            Application.Current.Windows[0]?.Close();
         }
     }
 }

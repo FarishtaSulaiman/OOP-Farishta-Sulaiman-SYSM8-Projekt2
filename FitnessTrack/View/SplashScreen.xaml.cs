@@ -1,10 +1,6 @@
 ﻿using FitnessTrack.Model;
+using FitnessTrack.MVVM;
 using FitnessTrack.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -21,23 +17,13 @@ namespace FitnessTrack.View
     /// </summary>
     public partial class SplashScreen : Window
     {
-        private UserManager _userManager;  
-
-        public SplashScreen()
+        // Konstruktorn som tar emot UserManager
+        public SplashScreen(UserManager userManager)
         {
             InitializeComponent();
-            _userManager = new UserManager();  // Skapat en instans av UserManager här
-            DataContext = new SplashScreenViewModel(OpenMainWindow);  
-        }
 
-        private void OpenMainWindow()
-        {
-            // Skicka vidare UserManager till MainWindow
-            var mainWindow = new MainWindow(_userManager);
-            mainWindow.Show();
-
-            // Stäng SplashScreen
-            this.Close();
+            // Skicka vidare UserManager till ViewModel
+            DataContext = new SplashScreenViewModel(userManager);
         }
     }
 }

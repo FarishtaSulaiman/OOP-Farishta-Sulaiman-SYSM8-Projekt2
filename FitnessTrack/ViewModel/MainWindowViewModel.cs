@@ -14,7 +14,7 @@ namespace FitnessTrack.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private readonly UserManager _userManager;  // För att hantera användare
+        private UserManager userManager;  // För att hantera användare
 
         // Egenskaper för användarnamn och lösenord
         public string Username { get; set; }
@@ -28,7 +28,7 @@ namespace FitnessTrack.ViewModel
         // Konstruktor som tar emot en UserManager-instans
         public MainWindowViewModel(UserManager userManager)
         {
-            _userManager = userManager;
+            this.userManager = userManager;
 
             // Initialisera kommandon och koppla till funktioner
             SignInCommand = new RelayCommand(SignIn);
@@ -40,7 +40,7 @@ namespace FitnessTrack.ViewModel
         private void SignIn(object parameter)
         {
             // Kontrollera om användarnamn och lösenord stämmer
-            var user = _userManager.GetUserByCredentials(Username, Password);
+            var user = userManager.GetUserByCredentials(Username, Password);
 
             if (user != null && user.PassWord == Password)
             {
@@ -61,7 +61,7 @@ namespace FitnessTrack.ViewModel
         // Logik för Forgot Password-knappen
         private void ForgotPassword(object parameter)
         {
-            var user = _userManager.GetUserByUsername(Username);
+            var user = userManager.GetUserByUsername(Username);
 
             if (user != null)
             {

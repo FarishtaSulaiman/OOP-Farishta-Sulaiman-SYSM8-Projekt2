@@ -5,8 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessTrack.View"
         mc:Ignorable="d"
-        Title="RegisterWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="Register" Height="500" Width="400"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        Background="#D3D3D3">
+
+    <StackPanel Margin="20">
+
+        <!-- Titel -->
+        <TextBlock Text="Register New User" FontSize="18" FontWeight="Bold"
+                   HorizontalAlignment="Center" Foreground="#DC143C" Margin="5"/>
+
+        <!-- First Name -->
+        <TextBlock Text="First Name" FontWeight="SemiBold"/>
+        <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="20" Margin="0,1,0,10"/>
+
+        <!-- Last Name -->
+        <TextBlock Text="Last Name" FontWeight="SemiBold"/>
+        <TextBox Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="20" Margin="0,1,0,10"/>
+
+        <!-- Username -->
+        <TextBlock Text="Username" FontWeight="SemiBold"/>
+        <TextBox Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="20" Margin="0,1,0,10"/>
+
+        <!-- Password -->
+        <TextBlock Text="Password" FontWeight="SemiBold"/>
+        <TextBox Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="20" Margin="0,1,0,10"/>
+
+        <!-- Confirm Password -->
+        <TextBlock Text="Confirm Password" FontWeight="SemiBold"/>
+        <TextBox Text="{Binding ConfirmPassword, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="20" Margin="0,1,0,10"/>
+
+        <!-- Country -->
+        <TextBlock Text="Country" FontWeight="SemiBold"/>
+        <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding SelectedCountry}" Width="250" Height="20" Margin="0,1,0,10"/>
+
+        <!-- Förutbestämd Security Question (text, ej ändringsbar) -->
+        <TextBlock Text="What is your favorite animal?" FontWeight="SemiBold" Margin="0,1,0,10"/>
+
+        <!-- Security Answer -->
+        <TextBox Text="{Binding SecurityAnswer, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="20" Margin="0,1,0,10"/>
+
+        <!-- Register Button -->
+        <Button Content="Register" Command="{Binding RegisterCommand}" Width="100" Height="25" HorizontalAlignment="Center" Margin="0,1,0,0"/>
+
+    </StackPanel>
 </Window>

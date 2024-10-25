@@ -18,13 +18,13 @@ namespace FitnessTrack
     /// </summary>
     public partial class MainWindow : Window
     {
-        private UserManager _userManager;
 
         public MainWindow(UserManager userManager)
         {
             InitializeComponent();
-            _userManager = userManager;  // Tilldela instansen av UserManager som skickades från SplashScreen
-            DataContext = new MainWindowViewModel(_userManager);  // Skicka vidare UserManager till ViewModel
+
+            // Skicka UserManager till ViewModel
+            DataContext = new MainWindowViewModel(userManager);
         }
     }
 }
