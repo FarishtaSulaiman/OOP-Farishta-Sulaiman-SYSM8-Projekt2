@@ -5,8 +5,71 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessTrack"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Login" Height="400" Width="450"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
+        Background="#D3D3D3">
 
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!-- Titeltext -->
+        <TextBlock Text="FitTrack Login" FontSize="30" FontWeight="SemiBold"
+                   HorizontalAlignment="Center" VerticalAlignment="Top"
+                   Foreground="#DC143C" Margin="0,20,0,30"/>
+        <!-- Crimson-färg på titeln -->
+
+        <!-- Username Label -->
+        <TextBlock Text="Username" FontSize="12" FontWeight="SemiBold"
+                   FontFamily="Arial" Foreground="Black" Margin="80,110,10,3" 
+                   HorizontalAlignment="Left" Grid.RowSpan="2"/>
+
+        <!-- Username TextBox -->
+        <TextBox Width="250" Height="30" 
+                 Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
+                 HorizontalAlignment="Center" Grid.Row="2"/>
+
+        <!-- Password Label -->
+        <TextBlock Text="Password" FontSize="12" FontWeight="SemiBold"
+                   FontFamily ="Arial" Foreground="Black" Grid.Row="3" Margin="80,15,10,3" 
+                   HorizontalAlignment="Left" />
+
+        <!-- Password TextBox -->
+        <TextBox Width="250" Height="30" 
+                 Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" 
+                 HorizontalAlignment="Center" Grid.Row="4"/>
+
+        <!-- Sign In-knappen -->
+        <Button Content="Sign In" Width="150" Height="40"
+                Background="#DC143C" Foreground="White" FontSize="16"
+                HorizontalAlignment="Center" Grid.Row="5"
+                Margin="0,20,0,10" Command="{Binding SignInCommand}"/>
+
+        <!-- Grid för Forgot Password och Register knappar -->
+        <Grid Grid.Row="6" HorizontalAlignment="Center" Width="300">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!-- Forgot Password Button -->
+            <Button Content="Forgot Password?" Width="120" Height="30"
+                    Background="White" Foreground="#DC143C" FontSize="14"
+                    Command="{Binding ForgotPasswordCommand}" Grid.Column="0"
+                    Margin="10,0,5,0" HorizontalAlignment="Right"/>
+
+            <!-- Register Button -->
+            <Button Content="Register" Width="120" Height="30"
+                    Background="White" Foreground="#DC143C" FontSize="14"
+                    Command="{Binding RegisterCommand}" Grid.Column="1"
+                    Margin="5,0,10,0" HorizontalAlignment="Left"/>
+        </Grid>
     </Grid>
 </Window>

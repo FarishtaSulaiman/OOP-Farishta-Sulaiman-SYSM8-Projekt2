@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using FitnessTrack.Model;
+using FitnessTrack.ViewModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,9 +18,13 @@ namespace FitnessTrack
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private UserManager _userManager;
+
+        public MainWindow(UserManager userManager)
         {
             InitializeComponent();
+            _userManager = userManager;  // Tilldela instansen av UserManager som skickades från SplashScreen
+            DataContext = new MainWindowViewModel(_userManager);  // Skicka vidare UserManager till ViewModel
         }
     }
 }

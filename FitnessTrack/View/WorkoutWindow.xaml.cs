@@ -19,7 +19,7 @@ namespace FitnessTrack.View
     /// </summary>
     public partial class WorkoutWindow : Window
     {
-        public WorkoutWindow()
+        public WorkoutWindow(Model.User user)
         {
             InitializeComponent();
         }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FitnessTrack.Model;
+using FitnessTrack.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,23 @@ namespace FitnessTrack.View
     /// </summary>
     public partial class SplashScreen : Window
     {
+        private UserManager _userManager;  
+
         public SplashScreen()
         {
             InitializeComponent();
+            _userManager = new UserManager();  // Skapat en instans av UserManager här
+            DataContext = new SplashScreenViewModel(OpenMainWindow);  
+        }
+
+        private void OpenMainWindow()
+        {
+            // Skicka vidare UserManager till MainWindow
+            var mainWindow = new MainWindow(_userManager);
+            mainWindow.Show();
+
+            // Stäng SplashScreen
+            this.Close();
         }
     }
 }
