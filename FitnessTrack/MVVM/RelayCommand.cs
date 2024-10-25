@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 namespace FitnessTrack.MVVM
 {
-    public class RelayCommand
+    public class RelayCommand : ICommand
     {
             //Fält för att hålla referenser till metoder som definierar vad som ska göras (Execute)
             private Action<object> execute;

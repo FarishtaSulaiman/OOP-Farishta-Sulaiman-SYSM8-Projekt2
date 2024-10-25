@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace FitnessTrack.MVVM
 {
-    public class ViewModelBase
+    public class ViewModelBase :INotifyPropertyChanged
     {
             public event PropertyChangedEventHandler? PropertyChanged;
 
