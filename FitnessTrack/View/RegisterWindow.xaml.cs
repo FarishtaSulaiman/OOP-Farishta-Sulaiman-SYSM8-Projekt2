@@ -21,11 +21,11 @@ namespace FitnessTrack.View
     /// </summary>
     public partial class RegisterWindow : Window
     {
-        public RegisterWindow(UserManager userManager)  //  konstruktor som tar emot UserManager
+        public RegisterWindow(UserManager userManager)
         {
             InitializeComponent();
-
-            DataContext = new RegisterWindowViewModel(userManager);
+            // Skicka både UserManager och RegisterWindow till ViewModel
+            DataContext = new RegisterWindowViewModel(userManager, this);
         }
     }
 }

@@ -78,11 +78,11 @@ namespace FitnessTrack.ViewModel
         // Logik för Register-knappen
         private void Register(object parameter)
         {
-            // Skapa ett nytt RegisterWindow och skicka med UserManager
+            // Öppna RegisterWindow och skicka vidare UserManager
             var registerWindow = new RegisterWindow(userManager);
             registerWindow.Show();
 
-            // Stäng MainWindow om du vill
+            // Stäng MainWindow efter att ha öppnat RegisterWindow
             Application.Current.Windows[0]?.Close();
         }
     }
