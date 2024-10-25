@@ -9,6 +9,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Bilder\löpare.jpg" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Bilder\löpare.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+  <ItemGroup>
     <Page Update="View\SplashScreen.xaml">
       <CopyToOutputDirectory></CopyToOutputDirectory>
     </Page>

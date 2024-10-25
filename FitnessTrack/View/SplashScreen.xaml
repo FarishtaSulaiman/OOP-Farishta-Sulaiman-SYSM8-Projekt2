@@ -11,7 +11,7 @@
 
     <Grid>
         <!-- Bakgrundsbild -->
-        <Image Source="pack://application:,,,/Bilder/löpare.jpg" 
+        <Image Source="/Bilder/löpare.jpg" 
                Stretch="Fill" 
                Opacity="0.3" 
                HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
