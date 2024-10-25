@@ -14,7 +14,7 @@ namespace FitnessTrack.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        private UserManager userManager;  // För att hantera användare
+        UserManager userManager;  // För att hantera användare
 
         // Egenskaper för användarnamn och lösenord
         public string Username { get; set; }
@@ -78,11 +78,11 @@ namespace FitnessTrack.ViewModel
         // Logik för Register-knappen
         private void Register(object parameter)
         {
-            // Öppna RegisterWindow för att skapa ny användare
-            var registerWindow = new RegisterWindow();
+            // Skapa ett nytt RegisterWindow och skicka med UserManager
+            var registerWindow = new RegisterWindow(userManager);
             registerWindow.Show();
 
-            // Stäng MainWindow
+            // Stäng MainWindow om du vill
             Application.Current.Windows[0]?.Close();
         }
     }

@@ -23,13 +23,16 @@ namespace FitnessTrack.ViewModel
 
         public ICommand RegisterCommand { get; }
 
+        // konstruktor som tar emot usermanager 
         public RegisterWindowViewModel(UserManager userManager)
         {
             _userManager = userManager;
             RegisterCommand = new RelayCommand(Register);
 
-            // Initiera länder (om det behövs)
+            
             Countries = new ObservableCollection<string> { "Sverige", "Norge", "Danmark", "Finland" };
+
+           
         }
 
         public void Register(object parameter)
@@ -47,6 +50,10 @@ namespace FitnessTrack.ViewModel
 
             // Stäng registerfönstret
             Application.Current.Windows[0]?.Close();
+
+            // Öppna MainWindow igen
+            var mainWindow = new MainWindow(_userManager);
+            mainWindow.Show();
         }
     }
 }

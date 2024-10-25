@@ -41,10 +41,10 @@
                    FontFamily ="Arial" Foreground="Black" Grid.Row="3" Margin="80,15,10,3" 
                    HorizontalAlignment="Left" />
 
-        <!-- Password TextBox -->
-        <TextBox Width="250" Height="30" 
-                 Text="{Binding Password, UpdateSourceTrigger=PropertyChanged}" 
-                 HorizontalAlignment="Center" Grid.Row="4"/>
+        <!-- PasswordBox -->
+        <PasswordBox Width="250" Height="30"
+             HorizontalAlignment="Center" Grid.Row="4"
+             PasswordChanged="PasswordBox_PasswordChanged" />
 
         <!-- Sign In-knappen -->
         <Button Content="Sign In" Width="150" Height="40"

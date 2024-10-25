@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FitnessTrack.Model;
+using FitnessTrack.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,11 @@ namespace FitnessTrack.View
     /// </summary>
     public partial class RegisterWindow : Window
     {
-        public RegisterWindow()
+        public RegisterWindow(UserManager userManager)  //  konstruktor som tar emot UserManager
         {
             InitializeComponent();
+
+            DataContext = new RegisterWindowViewModel(userManager);
         }
     }
 }

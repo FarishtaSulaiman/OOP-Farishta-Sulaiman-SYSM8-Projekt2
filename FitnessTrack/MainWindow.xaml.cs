@@ -26,5 +26,14 @@ namespace FitnessTrack
             // Skicka UserManager till ViewModel
             DataContext = new MainWindowViewModel(userManager);
         }
+
+        //hanterar förändringar i passwordbox behöver hanteras manuellt pga kan ej binda till string 
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is MainWindowViewModel viewModel)
+            {
+                viewModel.Password = ((PasswordBox)sender).Password;
+            }
+        }
     }
 }
