@@ -14,11 +14,11 @@ namespace FitnessTrack.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        UserManager userManager;  // För att hantera användare
+        UserManager _userManager;  // För att hantera användare
 
         // Egenskaper för användarnamn och lösenord
-        public string Username { get; set; }
-        public string Password { get; set; }
+        public string? Username { get; set; }
+        public string? Password { get; set; }
 
         // Kommandon för knapparna
         public ICommand SignInCommand { get; }
@@ -28,7 +28,7 @@ namespace FitnessTrack.ViewModel
         // Konstruktor som tar emot en UserManager-instans
         public MainWindowViewModel(UserManager userManager)
         {
-            this.userManager = userManager;
+            this._userManager = userManager;
 
             // Initialisera kommandon och koppla till funktioner
             SignInCommand = new RelayCommand(SignIn);
@@ -40,11 +40,11 @@ namespace FitnessTrack.ViewModel
         private void SignIn(object parameter)
         {
             // Kontrollera om användarnamn och lösenord stämmer
-            var user = userManager.GetUserByCredentials(Username, Password);
+            var user = _userManager.GetUserByCredentials(Username, Password);
 
             if (user != null && user.PassWord == Password)
             {
-                // Om inloggningen lyckas, öppna WorkoutWindow
+                // Om inloggningen lyckas, öppnar WorkoutWindow
                 var workoutsWindow = new WorkoutWindow(user);
                 workoutsWindow.Show();
 
@@ -61,7 +61,7 @@ namespace FitnessTrack.ViewModel
         // Logik för Forgot Password-knappen
         private void ForgotPassword(object parameter)
         {
-            var user = userManager.GetUserByUsername(Username);
+            var user = _userManager.GetUserByUsername(Username);
 
             if (user != null)
             {
@@ -79,7 +79,7 @@ namespace FitnessTrack.ViewModel
         private void Register(object parameter)
         {
             // Öppna RegisterWindow och skicka vidare UserManager
-            var registerWindow = new RegisterWindow(userManager);
+            var registerWindow = new RegisterWindow(_userManager);
             registerWindow.Show();
 
             // Stäng MainWindow efter att ha öppnat RegisterWindow

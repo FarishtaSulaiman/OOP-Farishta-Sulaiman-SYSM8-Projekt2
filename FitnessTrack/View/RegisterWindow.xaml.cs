@@ -24,7 +24,7 @@ namespace FitnessTrack.View
         public RegisterWindow(UserManager userManager)
         {
             InitializeComponent();
-            // Skicka både UserManager och RegisterWindow till ViewModel
+            // Skickar både UserManager och RegisterWindow till ViewModel
             DataContext = new RegisterWindowViewModel(userManager, this);
         }
     }

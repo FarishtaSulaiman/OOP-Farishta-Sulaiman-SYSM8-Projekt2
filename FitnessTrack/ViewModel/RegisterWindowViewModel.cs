@@ -15,47 +15,41 @@ namespace FitnessTrack.ViewModel
     public class RegisterWindowViewModel : ViewModelBase
     {
         private readonly UserManager _userManager;
-        private readonly Window _registerWindow; //  fönsterreferens för att kunna stänga fönstret
+        private  Window _registerWindow;  // Lägg till en referens till själva fönstret
 
         public string Username { get; set; }
         public string Password { get; set; }
-        public string ConfirmPassword { get; set; } // Ny variabel för bekräftelselösenord
+        public string ConfirmPassword { get; set; }  
         public ObservableCollection<string> Countries { get; set; }
         public string SelectedCountry { get; set; }
         public string SecurityAnswer { get; set; }
 
         public ICommand RegisterCommand { get; }
 
-        // Konstruktorn tar emot UserManager och RegisterWindow
+        // Konstruktor som tar emot både UserManager och fönstret
         public RegisterWindowViewModel(UserManager userManager, Window registerWindow)
         {
             _userManager = userManager;
-            _registerWindow = registerWindow; // Referens till det aktuella RegisterWindow
-
-            Countries = new ObservableCollection<string> { "Sverige", "Norge", "Danmark", "Finland" };
+            _registerWindow = registerWindow;  // Spara referens till fönstret
             RegisterCommand = new RelayCommand(Register);
+
+            // Initiera länder 
+            Countries = new ObservableCollection<string> { "Sverige", "Norge", "Danmark", "Finland" };
         }
 
-        private void Register(object parameter)
+        public void Register(object parameter)
         {
-            // Kontrollera att lösenordet uppfyller kraven
-            if (Password.Length < 8 || !Password.Any(char.IsUpper) || !Password.Any(char.IsDigit) || !Password.Any(ch => !char.IsLetterOrDigit(ch)))
-            {
-                MessageBox.Show("Lösenordet måste vara minst 8 tecken långt, innehålla en stor bokstav, en siffra och ett specialtecken.", "Fel", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Kontrollera att lösenorden matchar
-            if (Password != ConfirmPassword)
-            {
-                MessageBox.Show("Lösenorden matchar inte!", "Fel", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            // Kontrollera om användarnamnet redan finns
+            // Kontrollera om användarnamnet redan är taget
             if (_userManager.IsUsernameTaken(Username))
             {
                 MessageBox.Show("Användarnamnet är redan upptaget!", "Fel", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Kontrollera om lösenordet matchar bekräftelselösenordet
+            if (Password != ConfirmPassword)
+            {
+                MessageBox.Show("Lösenorden matchar inte!", "Fel", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -65,11 +59,15 @@ namespace FitnessTrack.ViewModel
 
             MessageBox.Show($"Användaren {Username} har registrerats framgångsrikt!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            // Stäng RegisterWindow och öppna MainWindow igen
-            _registerWindow?.Close(); // Stäng RegisterWindow
 
-            var mainWindow = new MainWindow(_userManager); // Öppna MainWindow
-            mainWindow.Show(); // Visa MainWindow efter att ha stängt RegisterWindow
+            // Öppna MainWindow igen och skicka med UserManager
+            var mainWindow = new MainWindow(_userManager);
+            mainWindow.Show();
+
+            // Stäng RegisterWindow
+            _registerWindow?.Close(); 
+
+           
         }
     }
 }

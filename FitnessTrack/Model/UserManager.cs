@@ -29,12 +29,12 @@ namespace FitnessTrack.Model
             return _registeredUsers.Any(u => u.UserName == username);
         }
 
-        public User GetUserByCredentials(string username, string password)
+        public User? GetUserByCredentials(string username, string password)
         {
             return _registeredUsers.FirstOrDefault(user => user.UserName == username && user.PassWord == password);
         }
 
-        public User GetUserByUsername(string username)
+        public User? GetUserByUsername(string username)
         {
             return _registeredUsers.FirstOrDefault(user => user.UserName == username);
         }
