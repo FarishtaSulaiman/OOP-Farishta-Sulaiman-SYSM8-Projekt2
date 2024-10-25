@@ -6,7 +6,42 @@ using System.Threading.Tasks;
 
 namespace FitnessTrack.Model
 {
-    internal class UserManager
+    public class UserManager
     {
+        private List<User> _registeredUsers = new List<User>();
+
+        public UserManager()
+        {
+            User testUser = new User("testUser", "Test123!", "Sverige", "Vad är ditt favoritdjur?", "hund");
+            _registeredUsers.Add(testUser);
+
+            AdminUser adminUser = new AdminUser("adminUser", "Admin123!", "Sverige", "Vad är ditt favoritdjur?", "katt");
+            _registeredUsers.Add(adminUser);
+        }
+
+        public void AddUser(User user)
+        {
+            _registeredUsers.Add(user);
+        }
+
+        public bool IsUsernameTaken(string username)
+        {
+            return _registeredUsers.Any(u => u.UserName == username);
+        }
+
+        public User GetUserByCredentials(string username, string password)
+        {
+            return _registeredUsers.FirstOrDefault(user => user.UserName == username && user.PassWord == password);
+        }
+
+        public User GetUserByUsername(string username)
+        {
+            return _registeredUsers.FirstOrDefault(user => user.UserName == username);
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return _registeredUsers;
+        }
     }
 }
