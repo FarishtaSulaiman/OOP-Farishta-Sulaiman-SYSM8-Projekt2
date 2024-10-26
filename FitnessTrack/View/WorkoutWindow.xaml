@@ -1,4 +1,4 @@
-﻿ <Window x:Class="FitnessTrack.View.WorkoutWindow"
+﻿<Window x:Class="FitnessTrack.View.WorkoutWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:FitnessTrack.View"
         mc:Ignorable="d"
    Title="Workout" Width="800" Height="600" Background="#2A2A2A"
-        WindowStartupLocation="CenterScreen"
-        DataContext="{Binding WorkoutViewModel}">
+        WindowStartupLocation="CenterScreen">
+
 
     <Window.Resources>
         <!-- Stil för rundade knappar -->
