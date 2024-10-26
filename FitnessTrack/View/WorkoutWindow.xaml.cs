@@ -23,5 +23,7 @@ namespace FitnessTrack.View
         {
             InitializeComponent();
         }
+
+        
     }
 }
