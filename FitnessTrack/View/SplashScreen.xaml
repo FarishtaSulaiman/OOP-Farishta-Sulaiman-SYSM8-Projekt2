@@ -5,28 +5,54 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessTrack.View"
         mc:Ignorable="d"
-        Title="SplashScreen" Height="400" Width="450"
+         Title="SplashScreen" Height="400" Width="450" 
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        WindowStyle="None" AllowsTransparency="True" Background="#D3D3D3">
+        WindowStyle="None" Background="Transparent">
 
+    <Window.Resources>
+        <!-- Stil för rundade knappar -->
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#DC143C" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="10" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="0">
+                            <!-- BorderThickness sätts till 0 för att ta bort kant -->
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <!-- Bilden fyller hela Grid -->
     <Grid>
-        <!-- Bakgrundsbild -->
+        <!-- Bakgrundsbild som täcker hela Grid -->
         <Image Source="/Bilder/löpare.jpg" 
                Stretch="Fill" 
                Opacity="0.3" 
-               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+               HorizontalAlignment="Stretch" 
+               VerticalAlignment="Stretch"/>
 
-        <!-- Välkomsttext -->
+        <!-- Titeltext centrerad -->
         <TextBlock Text="FitTrack" FontSize="40" FontWeight="Bold" 
                    FontFamily="Arial" Foreground="#DC143C" 
                    HorizontalAlignment="Center" VerticalAlignment="Top" 
-                   Margin="0" 
-                   Opacity="0.5"/>
+                   Margin="0,40,0,0" Opacity="0.7"/>
 
-        <!-- Get Started-knapp -->
+        <!-- Get Started-knapp med rundade hörn -->
         <Button Content="Get Started" Width="150" Height="40"
-                Background="#DC143C" Foreground="White" FontSize="16"
+                Style="{StaticResource RoundedButtonStyle}"
                 HorizontalAlignment="Center" VerticalAlignment="Center"
-                Margin="60" Command="{Binding GetStartedCommand}"/>
+                Command="{Binding GetStartedCommand}"/>
     </Grid>
 </Window>

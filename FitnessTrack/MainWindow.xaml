@@ -5,13 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessTrack"
         mc:Ignorable="d"
-        Title="Login" Height="400" Width="450"
+       Title="Login" Height="400" Width="450"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
         Background="#D3D3D3">
 
+    <Window.Resources>
+        <!-- Stil för rundade knappar -->
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#DC143C" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="10" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
     <Grid Margin="20">
-        
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -26,31 +48,30 @@
         <TextBlock Text="FitTrack Login" FontSize="30" FontWeight="SemiBold"
                    HorizontalAlignment="Center" VerticalAlignment="Top"
                    Foreground="#DC143C" Margin="0,20,0,30"/>
-        
 
-        <!-- Username Label -->
+        <!-- Username text -->
         <TextBlock Text="Username" FontSize="12" FontWeight="SemiBold"
-                   FontFamily="Arial" Foreground="Black" Margin="80,110,10,3" 
-                   HorizontalAlignment="Left" Grid.RowSpan="2"/>
+                   FontFamily="Arial" Foreground="Black" Margin="80,0,10,3" 
+                   HorizontalAlignment="Left" Grid.Row="1"/>
 
         <!-- Username TextBox -->
         <TextBox Width="250" Height="30" 
                  Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
                  HorizontalAlignment="Center" Grid.Row="2"/>
 
-        <!-- Password Label -->
+        <!-- Password text -->
         <TextBlock Text="Password" FontSize="12" FontWeight="SemiBold"
-                   FontFamily ="Arial" Foreground="Black" Grid.Row="3" Margin="80,15,10,3" 
+                   FontFamily="Arial" Foreground="Black" Grid.Row="3" Margin="80,15,10,3" 
                    HorizontalAlignment="Left" />
 
         <!-- PasswordBox -->
         <PasswordBox Width="250" Height="30"
-             HorizontalAlignment="Center" Grid.Row="4"
-             PasswordChanged="PasswordBox_PasswordChanged" />
+                     HorizontalAlignment="Center" Grid.Row="4"
+                     PasswordChanged="PasswordBox_PasswordChanged" />
 
         <!-- Sign In-knappen -->
         <Button Content="Sign In" Width="150" Height="40"
-                Background="#DC143C" Foreground="White" FontSize="16"
+                Style="{StaticResource RoundedButtonStyle}"
                 HorizontalAlignment="Center" Grid.Row="5"
                 Margin="0,20,0,10" Command="{Binding SignInCommand}"/>
 
@@ -61,20 +82,19 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
-            <!-- Forgot Password Button -->
+            <!-- Forgot Password knapp -->
             <Button Content="Forgot Password?" Width="120" Height="30"
-                    Background="White" Foreground="#DC143C" FontSize="14"
+                    Style="{StaticResource RoundedButtonStyle}" Background="White" 
+                    Foreground="#DC143C" FontSize="14"
                     Command="{Binding ForgotPasswordCommand}" Grid.Column="0"
                     Margin="10,0,5,0" HorizontalAlignment="Right"/>
 
-            <!-- Register Button -->
+            <!-- Register knapp -->
             <Button Content="Register" Width="120" Height="30"
-                    Background="White" Foreground="#DC143C" FontSize="14"
+                    Style="{StaticResource RoundedButtonStyle}" Background="White" 
+                    Foreground="#DC143C" FontSize="14"
                     Command="{Binding RegisterCommand}" Grid.Column="1"
                     Margin="5,0,10,0" HorizontalAlignment="Left"/>
-            
-            
         </Grid>
-        
     </Grid>
 </Window>
