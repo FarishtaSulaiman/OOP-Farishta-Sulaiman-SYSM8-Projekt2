@@ -10,6 +10,8 @@
         Background="#D3D3D3">
 
     <Grid Margin="20">
+        
+        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
@@ -70,6 +72,9 @@
                     Background="White" Foreground="#DC143C" FontSize="14"
                     Command="{Binding RegisterCommand}" Grid.Column="1"
                     Margin="5,0,10,0" HorizontalAlignment="Left"/>
+            
+            
         </Grid>
+        
     </Grid>
 </Window>

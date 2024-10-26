@@ -33,16 +33,19 @@ namespace FitnessTrack.Model
             }
         }
 
-        public void ResetPassword(string securityAnswer)
+        public string ResetPassword(string securityAnswer)
         {
-            if (SecurityAnswer.ToLower() == securityAnswer.ToLower())
+            if (securityAnswer == SecurityAnswer)
             {
-                MessageBox.Show($"Ditt lösenord är: {PassWord}", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
+                // Returnera lösenordet om svaret är korrekt
+                return PassWord;
             }
             else
             {
-                MessageBox.Show("Fel svar på säkerhetsfrågan.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
+                // Returnera en tom sträng om svaret är felaktigt
+                return string.Empty;
             }
         }
+
     }
 }

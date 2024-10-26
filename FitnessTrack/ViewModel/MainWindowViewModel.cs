@@ -58,19 +58,32 @@ namespace FitnessTrack.ViewModel
             }
         }
 
-        // Logik för Forgot Password-knappen
         private void ForgotPassword(object parameter)
         {
             var user = _userManager.GetUserByUsername(Username);
 
             if (user != null)
             {
-                // Säkerhetsfråga för att återställa lösenord
+                // Visa säkerhetsfrågan och be användaren om svaret
                 string answer = Microsoft.VisualBasic.Interaction.InputBox(user.SecurityQuestion, "Säkerhetsfråga");
-                user.ResetPassword(answer);
+
+                // Kontrollera svaret och återställ lösenordet
+                string password = user.ResetPassword(answer); // Returnerar lösenordet om svaret är korrekt
+
+                if (!string.IsNullOrEmpty(password))
+                {
+                    // Visa lösenordet i en MessageBox
+                    MessageBox.Show($"Ditt lösenord är: {password}", "Lösenord Återställning", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    // Om svaret är felaktigt, visa felmeddelande
+                    MessageBox.Show("Felaktigt svar på säkerhetsfrågan.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
             else
             {
+                // Om användarnamnet inte hittas, visa felmeddelande
                 MessageBox.Show("Användarnamnet existerar inte.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
