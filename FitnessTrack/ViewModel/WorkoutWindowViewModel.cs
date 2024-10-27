@@ -16,11 +16,14 @@ namespace FitnessTrack.ViewModel
     {
         private UserManager _userManager;
 
-        // Egenskap för att exponera den inloggade användaren
+        // Egenskap för att visa den inloggade användaren
         public User LoggedInUser => _userManager.CurrentUser;
 
         // Kommando för att öppna UserDetailsWindow
         public ICommand OpenUserDetailsCommand { get; }
+
+        // Kommando för att öppna AddWorkoutWindow
+        public ICommand OpenAddWorkoutWindowCommand { get; }
 
         // Konstruktor
         public WorkoutWindowViewModel(UserManager userManager)
@@ -29,6 +32,7 @@ namespace FitnessTrack.ViewModel
             OnPropertyChanged(nameof(LoggedInUser));
             // Initiera kommandot och koppla till metoden OpenUserDetails
             OpenUserDetailsCommand = new RelayCommand(OpenUserDetails);
+            OpenAddWorkoutWindowCommand = new RelayCommand(OpenAddWorkoutWindow);
         }
 
         // Metod för att öppna UserDetailsWindow
@@ -36,6 +40,12 @@ namespace FitnessTrack.ViewModel
         {
             var userDetailsWindow = new UserDetailsWindow(_userManager); // Skapa en ny instans av UserDetailsWindow och skicka vidare UserManager
             userDetailsWindow.Show(); // Visa fönstret
+        }
+        // Metod för att öppna AddWorkoutWindow
+        private void OpenAddWorkoutWindow(object parameter)
+        {
+            var addWorkoutWindow = new AddWorkoutWindow(_userManager);
+            addWorkoutWindow.ShowDialog(); // Öppna i dialogläge
         }
     }
 }
