@@ -43,5 +43,27 @@ namespace FitnessTrack.Model
         {
             return _registeredUsers;
         }
+
+        // skapar en referens för att visa vem som är inloggad till workoutwindow genom signin metoden används den inloggade usern genom currentuser 
+        private User _currentUser;
+        
+        public User CurrentUser
+        {
+            get => _currentUser;
+            set => _currentUser = value;
+        }
+
+        // Metod för att logga in användaren och sätta den som aktuell
+        public bool SignIn(string username, string password)
+        {
+            var user = _registeredUsers.FirstOrDefault(u => u.UserName == username && u.PassWord == password);
+            if (user != null)
+            {
+                _currentUser = user;
+                return true;
+            }
+            return false;
+        }
     }
+}
 }

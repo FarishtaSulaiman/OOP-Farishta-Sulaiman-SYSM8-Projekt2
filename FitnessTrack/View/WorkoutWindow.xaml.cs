@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FitnessTrack.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -25,5 +26,12 @@ namespace FitnessTrack.View
             
            
         }
+
+        public WorkoutWindow(UserManager userManager)
+        {
+            UserManager = userManager;
+        }
+
+        public UserManager UserManager { get; }
     }
 }
