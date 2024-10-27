@@ -8,8 +8,8 @@ namespace FitnessTrack.Model
 {
     public class AdminUser : User // har speciella rättigheter som hanterar alla träningspass
     {
-        public AdminUser(string UserName, string Password, string Country, string SecurityQuestion, string SecurityAnswer)
-            : base(UserName, Password, Country, SecurityQuestion, SecurityAnswer)
+        public AdminUser(string Username, string Password, string Country, string SecurityQuestion, string SecurityAnswer)
+            : base(Username, Password, Country, SecurityQuestion, SecurityAnswer)
         {
 
         }

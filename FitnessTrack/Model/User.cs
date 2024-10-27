@@ -13,8 +13,8 @@ namespace FitnessTrack.Model
         public string SecurityQuestion { get; set; }
         public string SecurityAnswer { get; set; }
 
-        public User(string userName, string passWord, string country, string securityQuestion, string securityAnswer)
-            : base(userName, passWord)
+        public User(string username, string password, string country, string securityQuestion, string securityAnswer)
+            : base(username, password)
         {
             Country = country;
             SecurityQuestion = securityQuestion;
@@ -23,7 +23,7 @@ namespace FitnessTrack.Model
 
         public override void SignIn()
         {
-            if (!string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(PassWord))
+            if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
             {
                 MessageBox.Show("Inloggning lyckades!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -38,7 +38,7 @@ namespace FitnessTrack.Model
             if (securityAnswer == SecurityAnswer)
             {
                 // Returnera lösenordet om svaret är korrekt
-                return PassWord;
+                return Password;
             }
             else
             {

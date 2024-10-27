@@ -9,6 +9,12 @@ namespace FitnessTrack.Model
     public class UserManager
     {
         private List<User> _registeredUsers = new List<User>();
+        
+        // Egenskap för att hålla koll på den inloggade användaren
+        public User CurrentUser { get; set; }
+
+        // Metod för att hämta en användare baserat på användarnamn och lösenord
+      
 
         public UserManager()
         {
@@ -26,17 +32,17 @@ namespace FitnessTrack.Model
 
         public bool IsUsernameTaken(string username)
         {
-            return _registeredUsers.Any(u => u.UserName == username);
+            return _registeredUsers.Any(u => u.Username == username);
         }
 
         public User? GetUserByCredentials(string username, string password)
         {
-            return _registeredUsers.FirstOrDefault(user => user.UserName == username && user.PassWord == password);
+            return _registeredUsers.FirstOrDefault(user => user.Username == username && user.Password == password);
         }
 
         public User? GetUserByUsername(string username)
         {
-            return _registeredUsers.FirstOrDefault(user => user.UserName == username);
+            return _registeredUsers.FirstOrDefault(user => user.Username == username);
         }
 
         public List<User> GetAllUsers()
@@ -44,26 +50,5 @@ namespace FitnessTrack.Model
             return _registeredUsers;
         }
 
-        // skapar en referens för att visa vem som är inloggad till workoutwindow genom signin metoden används den inloggade usern genom currentuser 
-        private User _currentUser;
-        
-        public User CurrentUser
-        {
-            get => _currentUser;
-            set => _currentUser = value;
-        }
-
-        // Metod för att logga in användaren och sätta den som aktuell
-        public bool SignIn(string username, string password)
-        {
-            var user = _registeredUsers.FirstOrDefault(u => u.UserName == username && u.PassWord == password);
-            if (user != null)
-            {
-                _currentUser = user;
-                return true;
-            }
-            return false;
-        }
     }
-}
 }

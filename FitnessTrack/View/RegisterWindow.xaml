@@ -18,7 +18,7 @@
 
         <!-- First Name -->
         <TextBlock Text="First Name" FontWeight="SemiBold"/>
-        <TextBox Text="{Binding FirstName, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="20" Margin="0,1,0,10"/>
+        <TextBox Text="{Binding Firstame, UpdateSourceTrigger=PropertyChanged}" Width="250" Height="20" Margin="0,1,0,10"/>
 
         <!-- Last Name -->
         <TextBlock Text="Last Name" FontWeight="SemiBold"/>

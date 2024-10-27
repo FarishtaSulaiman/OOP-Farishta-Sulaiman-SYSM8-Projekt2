@@ -15,6 +15,7 @@ namespace FitnessTrack.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         UserManager _userManager;  // För att hantera användare
+        private readonly UserManager userManager;
 
         // Egenskaper för användarnamn och lösenord
         public string? Username { get; set; }
@@ -28,7 +29,7 @@ namespace FitnessTrack.ViewModel
         // Konstruktor som tar emot en UserManager-instans
         public MainWindowViewModel(UserManager userManager)
         {
-            this._userManager = userManager;
+            _userManager = userManager;
 
             // Initialisera kommandon och koppla till funktioner
             SignInCommand = new RelayCommand(SignIn);
@@ -39,13 +40,23 @@ namespace FitnessTrack.ViewModel
         // Logik för Sign In-knappen
         private void SignIn(object parameter)
         {
-            // Kontrollera om användarnamn och lösenord stämmer
+            // Kontrollera om användarnamn och lösenord är ifyllda
+            if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+            {
+                MessageBox.Show("Fyll i både användarnamn och lösenord.", "Varning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            // Verifiera om användarnamn och lösenord stämmer
             var user = _userManager.GetUserByCredentials(Username, Password);
 
-            if (user != null && user.PassWord == Password)
+            if (user != null)
             {
-                // Om inloggningen lyckas, öppnar WorkoutWindow
-                var workoutsWindow = new WorkoutWindow(user);
+                // Sätt inloggad användare i UserManager
+                _userManager.CurrentUser = user;
+
+                // Öppna WorkoutWindow och skicka med UserManager
+                var workoutsWindow = new WorkoutWindow(_userManager);
                 workoutsWindow.Show();
 
                 // Stäng MainWindow
@@ -59,34 +70,34 @@ namespace FitnessTrack.ViewModel
         }
 
         private void ForgotPassword(object parameter)
-        {
-            var user = _userManager.GetUserByUsername(Username);
+{
+           var user = _userManager.GetUserByUsername(Username);
 
-            if (user != null)
-            {
-                // Visa säkerhetsfrågan och be användaren om svaret
-                string answer = Microsoft.VisualBasic.Interaction.InputBox(user.SecurityQuestion, "Säkerhetsfråga");
+           if (user != null)
+           {
+        // Visa säkerhetsfrågan och be användaren om svaret
+        string answer = Microsoft.VisualBasic.Interaction.InputBox(user.SecurityQuestion, "Säkerhetsfråga");
 
-                // Kontrollera svaret och återställ lösenordet
-                string password = user.ResetPassword(answer); // Returnerar lösenordet om svaret är korrekt
+        // Kontrollera svaret och återställ lösenordet
+        string password = user.ResetPassword(answer); // Returnerar lösenordet om svaret är korrekt
 
-                if (!string.IsNullOrEmpty(password))
-                {
-                    // Visa lösenordet i en MessageBox
-                    MessageBox.Show($"Ditt lösenord är: {password}", "Lösenord Återställning", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else
-                {
-                    // Om svaret är felaktigt, visa felmeddelande
-                    MessageBox.Show("Felaktigt svar på säkerhetsfrågan.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-            }
-            else
-            {
-                // Om användarnamnet inte hittas, visa felmeddelande
-                MessageBox.Show("Användarnamnet existerar inte.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+             if (!string.IsNullOrEmpty(password))
+             {
+            // Visa lösenordet i en WPF MessageBox
+            MessageBox.Show($"Ditt lösenord är: {password}", "Lösenord Återställning", MessageBoxButton.OK, MessageBoxImage.Information);
+              }
+             else
+             {
+            // Om svaret är felaktigt, visa felmeddelande
+            MessageBox.Show("Felaktigt svar på säkerhetsfrågan.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
         }
+    }
+    else
+    {
+        // Om användarnamnet inte hittas, visa felmeddelande
+        MessageBox.Show("Användarnamnet existerar inte.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
+    }
+}
 
         // Logik för Register-knappen
         private void Register(object parameter)

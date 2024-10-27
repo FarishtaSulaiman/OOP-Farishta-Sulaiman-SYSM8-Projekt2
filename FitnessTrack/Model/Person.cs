@@ -9,14 +9,14 @@ namespace FitnessTrack.Model
     public abstract class Person
     {
         // Property
-        public string UserName { get; set; }
-        public string PassWord { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
 
         // Konstruktor
-        public Person(string userName, string passWord)
+        public Person(string username, string password)
         {
-            UserName = userName;
-            PassWord = passWord;
+            Username = username;
+            Password = password;
         }
 
         // Abstrakt metod utan implementering, det är underklasserna som måste implementera den
