@@ -53,6 +53,12 @@ namespace FitnessTrack.ViewModel
                 return;
             }
 
+            // Kontrollera om lösenordet uppfyller kraven
+            if (!_userManager.IsPasswordValid(Password))
+            {
+                MessageBox.Show("Lösenordet måste vara minst 8 tecken långt och innehålla minst en siffra samt ett specialtecken.", "Fel", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
             // Skapa ny användare
             User newUser = new User(Username, Password, SelectedCountry, "Vad är ditt favoritdjur?", SecurityAnswer);
             _userManager.AddUser(newUser);

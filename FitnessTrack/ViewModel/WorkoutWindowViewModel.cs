@@ -23,7 +23,7 @@ namespace FitnessTrack.ViewModel
         public WorkoutWindowViewModel(UserManager userManager)
         {
             _userManager = userManager;
-            OnPropertyChanged(nameof(LoggedInUser));  // Skicka meddelande om att användaren är inloggad
+            OnPropertyChanged(nameof(LoggedInUser));  
         }
     }
 }

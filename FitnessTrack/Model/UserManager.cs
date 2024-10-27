@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace FitnessTrack.Model
@@ -23,6 +24,20 @@ namespace FitnessTrack.Model
 
             AdminUser adminUser = new AdminUser("adminUser", "Admin123!", "Sverige", "Vad är ditt favoritdjur?", "katt");
             _registeredUsers.Add(adminUser);
+        }
+
+        // Metod för att validera lösenordet
+        public bool IsPasswordValid(string password)
+        {
+            // Kontrollera om lösenordet är minst 8 tecken, innehåller minst en siffra och ett specialtecken
+            if (password.Length >= 8 &&
+                Regex.IsMatch(password, @"[0-9]") &&           // Minst en siffra
+                Regex.IsMatch(password, @"[\W_]"))            // Minst ett specialtecken
+               
+            {
+                return true;
+            }
+            return false;
         }
 
         public void AddUser(User user)
