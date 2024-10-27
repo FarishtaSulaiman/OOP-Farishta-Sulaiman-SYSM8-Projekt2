@@ -19,11 +19,23 @@ namespace FitnessTrack.ViewModel
         // Egenskap för att exponera den inloggade användaren
         public User LoggedInUser => _userManager.CurrentUser;
 
+        // Kommando för att öppna UserDetailsWindow
+        public ICommand OpenUserDetailsCommand { get; }
+
         // Konstruktor
         public WorkoutWindowViewModel(UserManager userManager)
         {
             _userManager = userManager;
-            OnPropertyChanged(nameof(LoggedInUser));  
+            OnPropertyChanged(nameof(LoggedInUser));
+            // Initiera kommandot och koppla till metoden OpenUserDetails
+            OpenUserDetailsCommand = new RelayCommand(OpenUserDetails);
+        }
+
+        // Metod för att öppna UserDetailsWindow
+        private void OpenUserDetails(object parameter)
+        {
+            var userDetailsWindow = new UserDetailsWindow(_userManager); // Skapa en ny instans av UserDetailsWindow och skicka vidare UserManager
+            userDetailsWindow.Show(); // Visa fönstret
         }
     }
 }
