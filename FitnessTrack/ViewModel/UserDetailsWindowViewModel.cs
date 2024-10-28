@@ -13,7 +13,7 @@ namespace FitnessTrack.ViewModel
         private readonly UserManager _userManager;
 
         // Egenskap för användardetaljer
-        public User LoggedInUser => _userManager.CurrentUser;
+        public Person LoggedInUser => _userManager.CurrentPerson;
 
         // Konstruktor som tar emot en UserManager
         public UserDetailsWindowViewModel(UserManager userManager)

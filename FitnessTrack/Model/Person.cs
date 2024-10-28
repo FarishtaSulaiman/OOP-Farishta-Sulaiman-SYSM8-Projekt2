@@ -12,6 +12,9 @@ namespace FitnessTrack.Model
         public string Username { get; set; }
         public string Password { get; set; }
 
+        // En virtuell workouts-lista som kan skrivas över i User
+        public virtual List<WorkOut> Workouts { get; set; } = new List<WorkOut>();
+
         // Konstruktor
         public Person(string username, string password)
         {

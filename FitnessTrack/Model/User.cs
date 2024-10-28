@@ -13,6 +13,9 @@ namespace FitnessTrack.Model
         public string SecurityQuestion { get; set; }
         public string SecurityAnswer { get; set; }
 
+
+        // Behåll Workouts specifikt för User
+        public override List<WorkOut> Workouts { get; set; } = new List<WorkOut>();
         public User(string username, string password, string country, string securityQuestion, string securityAnswer)
             : base(username, password)
         {

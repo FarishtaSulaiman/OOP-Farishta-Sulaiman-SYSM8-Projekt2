@@ -14,23 +14,22 @@ namespace FitnessTrack.ViewModel
 {
     public class WorkoutWindowViewModel : ViewModelBase
     {
-        private UserManager _userManager;
+        private readonly UserManager _userManager;
 
-        // Egenskap för att visa den inloggade användaren
-        public User LoggedInUser => _userManager.CurrentUser;
+        // Egenskap för att visa den inloggade användaren som Person
+        public Person CurrentPerson => _userManager.CurrentPerson;
 
-        // Kommando för att öppna UserDetailsWindow
+        // Kommandon för att öppna andra fönster
         public ICommand OpenUserDetailsCommand { get; }
-
-        // Kommando för att öppna AddWorkoutWindow
         public ICommand OpenAddWorkoutWindowCommand { get; }
 
         // Konstruktor
         public WorkoutWindowViewModel(UserManager userManager)
         {
             _userManager = userManager;
-            OnPropertyChanged(nameof(LoggedInUser));
-            // Initiera kommandot och koppla till metoden OpenUserDetails
+            OnPropertyChanged(nameof(CurrentPerson));
+
+            // Initiera kommandona
             OpenUserDetailsCommand = new RelayCommand(OpenUserDetails);
             OpenAddWorkoutWindowCommand = new RelayCommand(OpenAddWorkoutWindow);
         }
@@ -38,14 +37,15 @@ namespace FitnessTrack.ViewModel
         // Metod för att öppna UserDetailsWindow
         private void OpenUserDetails(object parameter)
         {
-            var userDetailsWindow = new UserDetailsWindow(_userManager); // Skapa en ny instans av UserDetailsWindow och skicka vidare UserManager
-            userDetailsWindow.Show(); // Visa fönstret
+            var userDetailsWindow = new UserDetailsWindow(_userManager); // Skapa och visa UserDetailsWindow
+            userDetailsWindow.Show();
         }
+
         // Metod för att öppna AddWorkoutWindow
         private void OpenAddWorkoutWindow(object parameter)
         {
-            var addWorkoutWindow = new AddWorkoutWindow(_userManager);
-            addWorkoutWindow.ShowDialog(); // Öppna i dialogläge
+            var addWorkoutWindow = new AddWorkoutWindow(_userManager); // Skapa och visa AddWorkoutWindow
+            addWorkoutWindow.ShowDialog();
         }
     }
 }

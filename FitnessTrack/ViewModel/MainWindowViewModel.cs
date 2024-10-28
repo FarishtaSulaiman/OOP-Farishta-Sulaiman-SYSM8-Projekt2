@@ -14,8 +14,7 @@ namespace FitnessTrack.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        UserManager _userManager;  // För att hantera användare
-        private readonly UserManager userManager;
+        private readonly UserManager _userManager;  // För att hantera användare
 
         // Egenskaper för användarnamn och lösenord
         public string? Username { get; set; }
@@ -47,13 +46,13 @@ namespace FitnessTrack.ViewModel
                 return;
             }
 
-            // Verifiera om användarnamn och lösenord stämmer
-            var user = _userManager.GetUserByCredentials(Username, Password);
+            // Använd GetPersonByCredentials för att verifiera om användarnamn och lösenord stämmer
+            var person = _userManager.GetPersonByCredentials(Username, Password);
 
-            if (user != null)
+            if (person != null)
             {
-                // Sätt inloggad användare i UserManager
-                _userManager.CurrentUser = user;
+                // Sätt inloggad person i UserManager
+                _userManager.CurrentPerson = person;
 
                 // Öppna WorkoutWindow och skicka med UserManager
                 var workoutsWindow = new WorkoutWindow(_userManager);
@@ -69,35 +68,30 @@ namespace FitnessTrack.ViewModel
             }
         }
 
+        // Logik för ForgotPassword-knappen
         private void ForgotPassword(object parameter)
-{
-           var user = _userManager.GetUserByUsername(Username);
+        {
+            var user = _userManager.GetUserByUsername(Username);
 
-           if (user != null)
-           {
-        // Visa säkerhetsfrågan och be användaren om svaret
-        string answer = Microsoft.VisualBasic.Interaction.InputBox(user.SecurityQuestion, "Säkerhetsfråga");
+            if (user != null)
+            {
+                string answer = Microsoft.VisualBasic.Interaction.InputBox(user.SecurityQuestion, "Säkerhetsfråga");
+                string password = user.ResetPassword(answer);
 
-        // Kontrollera svaret och återställ lösenordet
-        string password = user.ResetPassword(answer); // Returnerar lösenordet om svaret är korrekt
-
-             if (!string.IsNullOrEmpty(password))
-             {
-            // Visa lösenordet i en WPF MessageBox
-            MessageBox.Show($"Ditt lösenord är: {password}", "Lösenord Återställning", MessageBoxButton.OK, MessageBoxImage.Information);
-              }
-             else
-             {
-            // Om svaret är felaktigt, visa felmeddelande
-            MessageBox.Show("Felaktigt svar på säkerhetsfrågan.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (!string.IsNullOrEmpty(password))
+                {
+                    MessageBox.Show($"Ditt lösenord är: {password}", "Lösenord Återställning", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Felaktigt svar på säkerhetsfrågan.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Användarnamnet existerar inte.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
-    }
-    else
-    {
-        // Om användarnamnet inte hittas, visa felmeddelande
-        MessageBox.Show("Användarnamnet existerar inte.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-    }
-}
 
         // Logik för Register-knappen
         private void Register(object parameter)

@@ -37,7 +37,7 @@
         <!-- Sidomeny -->
         <StackPanel Background="#333" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Left">
             <!-- Inloggad användares namn i sidomenyn -->
-            <TextBlock Text="{Binding LoggedInUser.Username}" FontSize="18" FontWeight="SemiBold" 
+            <TextBlock Text="{Binding CurrentPerson.Username}" FontSize="18" FontWeight="SemiBold" 
                        Foreground="White" Margin="10,20,10,10" TextAlignment="Center"/>
 
             <!-- Rundade knappar -->
