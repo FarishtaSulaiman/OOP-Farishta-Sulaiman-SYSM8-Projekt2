@@ -94,8 +94,8 @@ namespace FitnessTrack.ViewModel
 
             // Initiera kommandona
             OpenAddWorkoutWindowCommand = new RelayCommand(OpenAddWorkoutWindow);
-            OpenWorkoutDetailsCommand = new RelayCommand(OpenWorkoutDetails, CanExecuteWorkoutCommand);
-            RemoveWorkoutCommand = new RelayCommand(RemoveWorkout, CanExecuteWorkoutCommand);
+            OpenWorkoutDetailsCommand = new RelayCommand(ShowWorkoutDetails);
+            RemoveWorkoutCommand = new RelayCommand(RemoveWorkout);
             OpenUserDetailsCommand = new RelayCommand(OpenUserDetails);
             ShowAppInfoCommand = new RelayCommand(ShowAppInfo);
             SignOutCommand = new RelayCommand(SignOut);
@@ -120,18 +120,37 @@ namespace FitnessTrack.ViewModel
             var detailsWindow = new WorkoutDetailsWindow(SelectedWorkout);
             detailsWindow.Show();
         }
+        // Metod för att visa detaljer för det markerade träningspasset
+        private void ShowWorkoutDetails(object parameter)
+        {
+            if (SelectedWorkout == null)
+            {
+                MessageBox.Show("Vänligen markera ett träningspass för att visa detaljer.", "Varning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
 
-        // Metod för att ta bort markerat träningspass
+            // Skapa och visa WorkoutDetailsWindow om ett pass är markerat
+            var workoutDetailsWindow = new WorkoutDetailsWindow(SelectedWorkout);
+            workoutDetailsWindow.Show();
+        }
+
+        // Metod för att ta bort det markerade träningspasset
         private void RemoveWorkout(object parameter)
         {
             if (SelectedWorkout == null)
             {
-                MessageBox.Show("Vänligen välj ett träningspass att ta bort.", "Varning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Vänligen markera ett träningspass för att ta bort.", "Varning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            _userManager.CurrentPerson.Workouts.Remove(SelectedWorkout);
+
+            // Ta bort det markerade träningspasset om det finns markerat
             FilteredWorkouts.Remove(SelectedWorkout);
+            _userManager.CurrentPerson.Workouts.Remove(SelectedWorkout);
+            SelectedWorkout = null;
         }
+
+       
+      
 
         // Metod för att öppna UserDetailsWindow
         private void OpenUserDetails(object parameter)
