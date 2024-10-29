@@ -14,10 +14,11 @@ namespace FitnessTrack.MVVM
 
             //Kollar om kommandot kan köras
             private Func<object, bool> canExecute;
+        private Action openAddWorkoutWindow;
 
 
-            //Event som signalerar när kommandots möjlighet att köras har ändrats
-            public event EventHandler? CanExecuteChanged
+        //Event som signalerar när kommandots möjlighet att köras har ändrats
+        public event EventHandler? CanExecuteChanged
             {
                 add { CommandManager.RequerySuggested += value; }
                 remove { CommandManager.RequerySuggested -= value; }
@@ -29,8 +30,13 @@ namespace FitnessTrack.MVVM
                 this.canExecute = canExecute;
             }
 
-            //Bestämmer om kommandot kan köras eller inte
-            public bool CanExecute(object? parameter)
+        public RelayCommand(Action openAddWorkoutWindow)
+        {
+            this.openAddWorkoutWindow = openAddWorkoutWindow;
+        }
+
+        //Bestämmer om kommandot kan köras eller inte
+        public bool CanExecute(object? parameter)
             {
                 return canExecute == null || canExecute(parameter);
             }

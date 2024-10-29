@@ -65,8 +65,8 @@
                 <ComboBox ItemsSource="{Binding FilterOptions}" 
                           SelectedItem="{Binding SelectedFilter}" Width="130" Margin="0,0,10,0" />
                 <DatePicker SelectedDate="{Binding SelectedDateFilter}" Width="130" Margin="0,0,10,0"/>
-                <TextBox Text="{Binding FilterText}" Width="150" Height="25" Margin="0,0,10,0" 
-                         Padding="5" Background="White" Foreground="Black" BorderBrush="Gray" />
+                <TextBox Text="bhjk" Width="150" Height="25" Margin="0,0,10,0" 
+                         Padding="2" Background="White" Foreground="Black" BorderBrush="Gray" />
                 <Button Content="Apply Filter" Command="{Binding ApplyFilterCommand}" 
                         Style="{StaticResource RoundedButtonStyle}" Width="100" Height="25"/>
             </StackPanel>

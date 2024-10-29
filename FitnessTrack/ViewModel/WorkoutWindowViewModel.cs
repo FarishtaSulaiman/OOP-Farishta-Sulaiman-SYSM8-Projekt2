@@ -12,10 +12,10 @@ using System.Windows;
 
 namespace FitnessTrack.ViewModel
 {
+    
     public class WorkoutWindowViewModel : ViewModelBase
     {
         private readonly UserManager _userManager;
-        private WorkOut _selectedWorkout;
 
         // Egenskap för att visa den inloggade användaren
         public Person CurrentPerson => _userManager.CurrentPerson;
@@ -23,7 +23,7 @@ namespace FitnessTrack.ViewModel
         // Lista med träningspass som visas i ListView
         public ObservableCollection<WorkOut> FilteredWorkouts { get; set; }
 
-        // Kommando-egenskaper för knappar och interaktioner
+        // Kommando för att öppna andra fönster och hantera träningspass
         public ICommand OpenAddWorkoutWindowCommand { get; }
         public ICommand OpenWorkoutDetailsCommand { get; }
         public ICommand RemoveWorkoutCommand { get; }
@@ -33,6 +33,7 @@ namespace FitnessTrack.ViewModel
         public ICommand ApplyFilterCommand { get; }
 
         // För att hålla koll på valt träningspass
+        private WorkOut _selectedWorkout;
         public WorkOut SelectedWorkout
         {
             get => _selectedWorkout;
@@ -76,26 +77,19 @@ namespace FitnessTrack.ViewModel
         private string _filterText;
         public string FilterText
         {
-
-
-    
-
-                get => _filterText;
-                set
-                {
-                    _filterText = value;
-                    OnPropertyChanged(nameof(FilterText));
-                    ApplyFilter();
-                }
+            get => _filterText;
+            set
+            {
+                _filterText = value;
+                OnPropertyChanged(nameof(FilterText));
+                ApplyFilter();
+            }
         }
 
-    // Konstruktor
+        // Konstruktor
         public WorkoutWindowViewModel(UserManager userManager)
         {
             _userManager = userManager;
-            OnPropertyChanged(nameof(CurrentPerson));
-
-            // Hämta träningspass för inloggad användare
             FilteredWorkouts = new ObservableCollection<WorkOut>(_userManager.CurrentPerson.Workouts);
 
             // Initiera kommandona
@@ -107,5 +101,80 @@ namespace FitnessTrack.ViewModel
             SignOutCommand = new RelayCommand(SignOut);
             ApplyFilterCommand = new RelayCommand(ApplyFilter);
         }
+
+        // Metod för att öppna AddWorkoutWindow
+        private void OpenAddWorkoutWindow(object parameter)
+        {
+            var addWorkoutWindow = new AddWorkoutWindow(_userManager);
+            addWorkoutWindow.ShowDialog();
+        }
+
+        // Metod för att öppna WorkoutDetailsWindow om ett träningspass är markerat
+        private void OpenWorkoutDetails(object parameter)
+        {
+            if (SelectedWorkout == null)
+            {
+                MessageBox.Show("Vänligen välj ett träningspass först.", "Varning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            var detailsWindow = new WorkoutDetailsWindow(SelectedWorkout);
+            detailsWindow.Show();
+        }
+
+        // Metod för att ta bort markerat träningspass
+        private void RemoveWorkout(object parameter)
+        {
+            if (SelectedWorkout == null)
+            {
+                MessageBox.Show("Vänligen välj ett träningspass att ta bort.", "Varning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            _userManager.CurrentPerson.Workouts.Remove(SelectedWorkout);
+            FilteredWorkouts.Remove(SelectedWorkout);
+        }
+
+        // Metod för att öppna UserDetailsWindow
+        private void OpenUserDetails(object parameter)
+        {
+            var userDetailsWindow = new UserDetailsWindow(_userManager);
+            userDetailsWindow.Show();
+        }
+
+        // Metod för att visa appinfo
+        private void ShowAppInfo(object parameter)
+        {
+            MessageBox.Show("FitTrack är en applikation för att hantera och spåra träningspass.", "Appinfo", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        // Metod för att logga ut och stänga WorkoutWindow
+        private void SignOut(object parameter)
+        {
+            // Skapa huvudfönstret och skicka vidare UserManager
+            var mainWindow = new MainWindow(_userManager);
+            mainWindow.Show();
+
+            // Stäng WorkoutWindow
+            Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is WorkoutWindow)?.Close();
+        }
+    
+
+        // Filtreringslogik
+        private void ApplyFilter(object parameter = null)
+        {
+            var filtered = _userManager.CurrentPerson.Workouts.Where(workout =>
+                (string.IsNullOrEmpty(SelectedFilter) || SelectedFilter == "All" || workout.Type == SelectedFilter) &&
+                (!SelectedDateFilter.HasValue || workout.Date.Date == SelectedDateFilter.Value.Date) &&
+                (string.IsNullOrEmpty(FilterText) || workout.Type.Contains(FilterText, StringComparison.OrdinalIgnoreCase))
+            ).ToList();
+
+            FilteredWorkouts.Clear();
+            foreach (var workout in filtered)
+            {
+                FilteredWorkouts.Add(workout);
+            }
+        }
+
+        // Kontrollera om ett träningspass är markerat
+        private bool CanExecuteWorkoutCommand(object parameter) => SelectedWorkout != null;
     }
 }

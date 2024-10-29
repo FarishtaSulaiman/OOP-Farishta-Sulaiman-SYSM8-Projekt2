@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FitnessTrack.Model;
+using FitnessTrack.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,9 +21,12 @@ namespace FitnessTrack.View
     /// </summary>
     public partial class WorkoutDetailsWindow : Window
     {
-        public WorkoutDetailsWindow()
+        public WorkoutDetailsWindow(WorkOut workout)
         {
             InitializeComponent();
+
+            // Sätter DataContext till en instans av WorkoutDetailsWindowViewModel
+            DataContext = new WorkoutDetailsWindowViewModel(workout);
         }
     }
 }
