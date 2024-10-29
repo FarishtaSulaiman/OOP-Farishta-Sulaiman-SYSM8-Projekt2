@@ -91,6 +91,8 @@ namespace FitnessTrack.ViewModel
         {
             _userManager = userManager;
             FilteredWorkouts = new ObservableCollection<WorkOut>(_userManager.CurrentPerson.Workouts);
+            // Kontrollera om inloggad användare är AdminUser och hämta träningspass baserat på detta
+            LoadWorkouts();
 
             // Initiera kommandona
             OpenAddWorkoutWindowCommand = new RelayCommand(OpenAddWorkoutWindow);
@@ -102,8 +104,26 @@ namespace FitnessTrack.ViewModel
             ApplyFilterCommand = new RelayCommand(ApplyFilter);
         }
 
-        // Metod för att öppna AddWorkoutWindow
-        private void OpenAddWorkoutWindow(object parameter)
+        // Funktion som hämtar träningspass baserat på användarroll
+        private void LoadWorkouts()
+        {
+            if (_userManager.CurrentPerson is AdminUser)
+            {
+                // Om användaren är AdminUser, visa alla användares träningspass
+                FilteredWorkouts = new ObservableCollection<WorkOut>(
+                    _userManager.GetAllUsers().SelectMany(user => user.Workouts));
+            }
+            else
+            {
+                // Om användaren är vanlig User, visa bara den inloggade användarens träningspass
+                FilteredWorkouts = new ObservableCollection<WorkOut>(_userManager.CurrentPerson.Workouts);
+            }
+
+            OnPropertyChanged(nameof(FilteredWorkouts));
+        }
+    
+    // Metod för att öppna AddWorkoutWindow
+    private void OpenAddWorkoutWindow(object parameter)
         {
             var addWorkoutWindow = new AddWorkoutWindow(_userManager);
             addWorkoutWindow.ShowDialog();
@@ -143,11 +163,24 @@ namespace FitnessTrack.ViewModel
                 return;
             }
 
-            // Ta bort det markerade träningspasset om det finns markerat
+            // Om den inloggade användaren är AdminUser
+            if (_userManager.CurrentPerson is AdminUser)
+            {
+                // Hitta användaren som äger träningspasset och ta bort det från deras lista
+                var owner = _userManager.GetAllUsers().FirstOrDefault(user => user.Workouts.Contains(SelectedWorkout));
+                owner?.Workouts.Remove(SelectedWorkout);
+            }
+            else
+            {
+                // Om det är en vanlig användare, ta bort träningspasset från deras egen lista
+                _userManager.CurrentPerson.Workouts.Remove(SelectedWorkout);
+            }
+
+            // Uppdatera den visade listan
             FilteredWorkouts.Remove(SelectedWorkout);
-            _userManager.CurrentPerson.Workouts.Remove(SelectedWorkout);
             SelectedWorkout = null;
         }
+    
 
        
       
