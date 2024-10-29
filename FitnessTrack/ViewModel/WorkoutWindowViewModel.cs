@@ -182,9 +182,6 @@ namespace FitnessTrack.ViewModel
         }
     
 
-       
-      
-
         // Metod för att öppna UserDetailsWindow
         private void OpenUserDetails(object parameter)
         {
@@ -195,7 +192,8 @@ namespace FitnessTrack.ViewModel
         // Metod för att visa appinfo
         private void ShowAppInfo(object parameter)
         {
-            MessageBox.Show("FitTrack är en applikation för att hantera och spåra träningspass.", "Appinfo", MessageBoxButton.OK, MessageBoxImage.Information);
+            var infoWindow = new InfoWindow();
+            infoWindow.ShowDialog();  // Öppna fönstret i dialogläge
         }
 
         // Metod för att logga ut och stänga WorkoutWindow
