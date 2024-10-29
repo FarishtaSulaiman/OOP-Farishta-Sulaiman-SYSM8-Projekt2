@@ -18,7 +18,7 @@ namespace FitnessTrack.Model
 
         public override int CalculateCaloriesBurned()
         {
-            return CaloriesBurned + Repetitions * 2;
+            return CaloriesBurned + Repetitions * 2; // ett exempel på beräkning 
         }
     }
 }

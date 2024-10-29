@@ -15,37 +15,97 @@ namespace FitnessTrack.ViewModel
     public class WorkoutWindowViewModel : ViewModelBase
     {
         private readonly UserManager _userManager;
+        private WorkOut _selectedWorkout;
 
-        // Egenskap för att visa den inloggade användaren som Person
+        // Egenskap för att visa den inloggade användaren
         public Person CurrentPerson => _userManager.CurrentPerson;
 
-        // Kommandon för att öppna andra fönster
-        public ICommand OpenUserDetailsCommand { get; }
-        public ICommand OpenAddWorkoutWindowCommand { get; }
+        // Lista med träningspass som visas i ListView
+        public ObservableCollection<WorkOut> FilteredWorkouts { get; set; }
 
-        // Konstruktor
+        // Kommando-egenskaper för knappar och interaktioner
+        public ICommand OpenAddWorkoutWindowCommand { get; }
+        public ICommand OpenWorkoutDetailsCommand { get; }
+        public ICommand RemoveWorkoutCommand { get; }
+        public ICommand OpenUserDetailsCommand { get; }
+        public ICommand ShowAppInfoCommand { get; }
+        public ICommand SignOutCommand { get; }
+        public ICommand ApplyFilterCommand { get; }
+
+        // För att hålla koll på valt träningspass
+        public WorkOut SelectedWorkout
+        {
+            get => _selectedWorkout;
+            set
+            {
+                _selectedWorkout = value;
+                OnPropertyChanged(nameof(SelectedWorkout));
+            }
+        }
+
+        // Filteralternativ för ComboBox
+        public ObservableCollection<string> FilterOptions { get; set; } = new ObservableCollection<string> { "All", "Cardio", "Strength" };
+
+        // För att hålla det valda filtret
+        private string _selectedFilter;
+        public string SelectedFilter
+        {
+            get => _selectedFilter;
+            set
+            {
+                _selectedFilter = value;
+                OnPropertyChanged(nameof(SelectedFilter));
+                ApplyFilter();
+            }
+        }
+
+        // För att filtrera på datum
+        private DateTime? _selectedDateFilter;
+        public DateTime? SelectedDateFilter
+        {
+            get => _selectedDateFilter;
+            set
+            {
+                _selectedDateFilter = value;
+                OnPropertyChanged(nameof(SelectedDateFilter));
+                ApplyFilter();
+            }
+        }
+
+        // För att filtrera på text
+        private string _filterText;
+        public string FilterText
+        {
+
+
+    
+
+                get => _filterText;
+                set
+                {
+                    _filterText = value;
+                    OnPropertyChanged(nameof(FilterText));
+                    ApplyFilter();
+                }
+        }
+
+    // Konstruktor
         public WorkoutWindowViewModel(UserManager userManager)
         {
             _userManager = userManager;
             OnPropertyChanged(nameof(CurrentPerson));
 
+            // Hämta träningspass för inloggad användare
+            FilteredWorkouts = new ObservableCollection<WorkOut>(_userManager.CurrentPerson.Workouts);
+
             // Initiera kommandona
-            OpenUserDetailsCommand = new RelayCommand(OpenUserDetails);
             OpenAddWorkoutWindowCommand = new RelayCommand(OpenAddWorkoutWindow);
-        }
-
-        // Metod för att öppna UserDetailsWindow
-        private void OpenUserDetails(object parameter)
-        {
-            var userDetailsWindow = new UserDetailsWindow(_userManager); // Skapa och visa UserDetailsWindow
-            userDetailsWindow.Show();
-        }
-
-        // Metod för att öppna AddWorkoutWindow
-        private void OpenAddWorkoutWindow(object parameter)
-        {
-            var addWorkoutWindow = new AddWorkoutWindow(_userManager); // Skapa och visa AddWorkoutWindow
-            addWorkoutWindow.ShowDialog();
+            OpenWorkoutDetailsCommand = new RelayCommand(OpenWorkoutDetails, CanExecuteWorkoutCommand);
+            RemoveWorkoutCommand = new RelayCommand(RemoveWorkout, CanExecuteWorkoutCommand);
+            OpenUserDetailsCommand = new RelayCommand(OpenUserDetails);
+            ShowAppInfoCommand = new RelayCommand(ShowAppInfo);
+            SignOutCommand = new RelayCommand(SignOut);
+            ApplyFilterCommand = new RelayCommand(ApplyFilter);
         }
     }
 }
