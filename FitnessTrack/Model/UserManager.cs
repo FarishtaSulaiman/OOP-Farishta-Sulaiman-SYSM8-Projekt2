@@ -16,11 +16,13 @@ namespace FitnessTrack.Model
 
         public UserManager()
         {
-            // Lägg till en testanvändare och en admin-användare
-            User testUser = new User("testUser", "Test123!", "Sverige", "Vad är ditt favoritdjur?", "hund");
-            _registeredPersons.Add(testUser);
-
+            // Skapat och lagt till en User och en AdminUser i programmet från start 
+            User defaultUser = new User("testUser", "Test123!", "Sverige", "Vad är ditt favoritdjur?", "hund");
             AdminUser adminUser = new AdminUser("adminUser", "Admin123!", "Sverige", "Vad är ditt favoritdjur?", "katt");
+
+
+            // Lägger  till dem i listan över registrerade personer
+            _registeredPersons.Add(defaultUser);
             _registeredPersons.Add(adminUser);
         }
 
@@ -33,14 +35,14 @@ namespace FitnessTrack.Model
                    Regex.IsMatch(password, @"[\W_]");            // Minst ett specialtecken
         }
 
-        public void AddUser(User user)
+        public void AddPerson(Person person)
         {
-            _registeredPersons.Add(user);
+            _registeredPersons.Add(person);
         }
 
         public bool IsUsernameTaken(string username)
         {
-            return _registeredPersons.Any(person => person.Username == username);
+            return _registeredPersons.Any(p => p.Username == username);
         }
 
         public Person? GetPersonByCredentials(string username, string password)
@@ -52,11 +54,10 @@ namespace FitnessTrack.Model
             return person;
         }
 
-        private List<User> _registeredUsers = new List<User>();
-
-        public User? GetUserByUsername(string username)
+        public Person? GetPersonByUsername(string username)
         {
-            return _registeredUsers.FirstOrDefault(user => user.Username == username);
+            // Returnera användaren om den finns i listan
+            return _registeredPersons.FirstOrDefault(person => person.Username == username);
         }
 
         // Hämta alla användare som är av typen User 
@@ -64,5 +65,6 @@ namespace FitnessTrack.Model
         {
             return _registeredPersons.OfType<User>().ToList();
         }
+    
     }
 }

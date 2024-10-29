@@ -6,19 +6,22 @@ using System.Threading.Tasks;
 
 namespace FitnessTrack.Model
 {
-    public class AdminUser : User // har speciella rättigheter som hanterar alla träningspass
+    public class AdminUser : User
     {
-        public AdminUser(string Username, string Password, string Country, string SecurityQuestion, string SecurityAnswer)
-            : base(Username, Password, Country, SecurityQuestion, SecurityAnswer)
+        public AdminUser(string username, string password, string country, string securityQuestion, string securityAnswer)
+            : base(username, password, country, securityQuestion, securityAnswer)
         {
-
         }
-    
-    
 
-        public void ManageAllWorukouts()
+        // Denna metod kan exempelvis hämta alla träningspass om UserManager skickas in
+        public List<WorkOut> ManageAllWorkouts(UserManager userManager)
         {
-            // logik för att hantera alla användarnas träningspass 
+            List<WorkOut> allWorkouts = new List<WorkOut>();
+            foreach (var user in userManager.GetAllUsers())
+            {
+                allWorkouts.AddRange(user.Workouts);
+            }
+            return allWorkouts;
         }
     }
 }

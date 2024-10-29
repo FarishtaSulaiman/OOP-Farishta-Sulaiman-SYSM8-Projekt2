@@ -61,7 +61,7 @@ namespace FitnessTrack.ViewModel
             }
             // Skapa ny användare
             User newUser = new User(Username, Password, SelectedCountry, "Vad är ditt favoritdjur?", SecurityAnswer);
-            _userManager.AddUser(newUser);
+            _userManager.AddPerson(newUser);
 
             MessageBox.Show($"Användaren {Username} har registrerats framgångsrikt!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 

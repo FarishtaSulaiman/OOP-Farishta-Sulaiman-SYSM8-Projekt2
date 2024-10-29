@@ -26,28 +26,14 @@ namespace FitnessTrack.Model
 
         public override void SignIn()
         {
-            if (!string.IsNullOrEmpty(Username) && !string.IsNullOrEmpty(Password))
-            {
-                MessageBox.Show("Inloggning lyckades!", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                MessageBox.Show("Fel användarnamn eller lösenord.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+           
         }
 
         public string ResetPassword(string securityAnswer)
         {
-            if (securityAnswer == SecurityAnswer)
-            {
-                // Returnera lösenordet om svaret är korrekt
-                return Password;
-            }
-            else
-            {
-                // Returnera en tom sträng om svaret är felaktigt
-                return string.Empty;
-            }
+            // Returnera lösenordet om svaret är korrekt
+            return securityAnswer == SecurityAnswer ? Password : string.Empty;
+
         }
 
     }

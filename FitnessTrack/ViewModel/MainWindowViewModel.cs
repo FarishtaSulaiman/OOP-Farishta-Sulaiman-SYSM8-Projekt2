@@ -26,11 +26,9 @@ namespace FitnessTrack.ViewModel
         public ICommand RegisterCommand { get; }
 
         // Konstruktor som tar emot en UserManager-instans
-        public MainWindowViewModel(UserManager userManager)
+        public MainWindowViewModel(UserManager userManager)  
         {
             _userManager = userManager;
-
-            // Initialisera kommandon och koppla till funktioner
             SignInCommand = new RelayCommand(SignIn);
             ForgotPasswordCommand = new RelayCommand(ForgotPassword);
             RegisterCommand = new RelayCommand(Register);
@@ -68,14 +66,19 @@ namespace FitnessTrack.ViewModel
             }
         }
 
-        // Logik för ForgotPassword-knappen
+        // Logik för ForgotPassword-knappen med integrerad funktion för resetpassword 
         private void ForgotPassword(object parameter)
         {
-            var user = _userManager.GetUserByUsername(Username);
+            // Hämta personen (kan vara User eller AdminUser) baserat på användarnamnet
+            var person = _userManager.GetPersonByUsername(Username);
 
-            if (user != null)
+            // Kontrollera om personen hittades och har en säkerhetsfråga
+            if (person is User user)
             {
+                // Visa säkerhetsfrågan och be om svar
                 string answer = Microsoft.VisualBasic.Interaction.InputBox(user.SecurityQuestion, "Säkerhetsfråga");
+
+                // Återställ lösenordet om svaret är korrekt
                 string password = user.ResetPassword(answer);
 
                 if (!string.IsNullOrEmpty(password))
@@ -89,7 +92,7 @@ namespace FitnessTrack.ViewModel
             }
             else
             {
-                MessageBox.Show("Användarnamnet existerar inte.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Användaren existerar inte eller har inte behörighet att återställa lösenordet.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
