@@ -24,7 +24,8 @@ namespace FitnessTrack.View
         public WorkoutWindow(UserManager userManager)
         {
             InitializeComponent();
-            DataContext = new WorkoutWindowViewModel(userManager);  // Skicka vidare UserManager till ViewModel
+            // Sätter ViewModel som DataContext och skickar in UserManager för att hantera användaruppgifter
+            DataContext = new WorkoutWindowViewModel(userManager);
         }
     }
 }

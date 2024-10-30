@@ -7,7 +7,7 @@
         mc:Ignorable="d"
        Title="Login" Height="400" Width="450"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Background="WhiteSmoke">
+        Background="#D3D3D3">
 
     <Window.Resources>
         <!-- Stil för rundade knappar -->
@@ -33,7 +33,7 @@
         </Style>
     </Window.Resources>
 
-    <Grid Margin="20">
+    <Grid Margin="20"  Background="WhiteSmoke">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />

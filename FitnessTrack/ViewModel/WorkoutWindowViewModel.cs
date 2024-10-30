@@ -12,18 +12,18 @@ using System.Windows;
 
 namespace FitnessTrack.ViewModel
 {
-    
+
     public class WorkoutWindowViewModel : ViewModelBase
     {
         private readonly UserManager _userManager;
 
-        // Egenskap för att visa den inloggade användaren
+        // Visar den inloggade användarens information
         public Person CurrentPerson => _userManager.CurrentPerson;
 
-        // Lista med träningspass som visas i ListView
+        // Lista med träningspass som visas efter filtrering
         public ObservableCollection<WorkOut> FilteredWorkouts { get; set; }
 
-        // Kommando för att öppna andra fönster och hantera träningspass
+        
         public ICommand OpenAddWorkoutWindowCommand { get; }
         public ICommand OpenWorkoutDetailsCommand { get; }
         public ICommand RemoveWorkoutCommand { get; }
@@ -32,7 +32,6 @@ namespace FitnessTrack.ViewModel
         public ICommand SignOutCommand { get; }
         public ICommand ApplyFilterCommand { get; }
 
-        // För att hålla koll på valt träningspass
         private WorkOut _selectedWorkout;
         public WorkOut SelectedWorkout
         {
@@ -44,10 +43,10 @@ namespace FitnessTrack.ViewModel
             }
         }
 
-        // Filteralternativ för ComboBox
+        
         public ObservableCollection<string> FilterOptions { get; set; } = new ObservableCollection<string> { "All", "Cardio", "Strength" };
 
-        // För att hålla det valda filtret
+        // Håller koll på valt typfilter
         private string _selectedFilter;
         public string SelectedFilter
         {
@@ -60,7 +59,7 @@ namespace FitnessTrack.ViewModel
             }
         }
 
-        // För att filtrera på datum
+        // Håller koll på valt datumfilter
         private DateTime? _selectedDateFilter;
         public DateTime? SelectedDateFilter
         {
@@ -73,7 +72,7 @@ namespace FitnessTrack.ViewModel
             }
         }
 
-        // För att filtrera på text
+        // Fritextsökning som kan användas för att filtrera träningspass
         private string _filterText;
         public string FilterText
         {
@@ -86,61 +85,63 @@ namespace FitnessTrack.ViewModel
             }
         }
 
-        // Konstruktor
+        // Lista över fördefinierade varaktighetsintervall
+        public ObservableCollection<string> DurationFilterOptions { get; set; } = new ObservableCollection<string>
+        {
+            "All", "< 30 min", "30-60 min", "> 60 min"
+        };
+
+        // Håller koll på valt varaktighetsintervall
+        private string _selectedDurationFilterOption;
+        public string SelectedDurationFilterOption
+        {
+            get => _selectedDurationFilterOption;
+            set
+            {
+                _selectedDurationFilterOption = value;
+                OnPropertyChanged(nameof(SelectedDurationFilterOption));
+                ApplyFilter();
+            }
+        }
+
+        // Konstruktor som initierar kommandon och laddar träningspass
         public WorkoutWindowViewModel(UserManager userManager)
         {
             _userManager = userManager;
-            FilteredWorkouts = new ObservableCollection<WorkOut>(_userManager.CurrentPerson.Workouts);
-            // Kontrollera om inloggad användare är AdminUser och hämta träningspass baserat på detta
             LoadWorkouts();
-
-            // Initiera kommandona
             OpenAddWorkoutWindowCommand = new RelayCommand(OpenAddWorkoutWindow);
-            OpenWorkoutDetailsCommand = new RelayCommand(ShowWorkoutDetails);
-            RemoveWorkoutCommand = new RelayCommand(RemoveWorkout);
+            OpenWorkoutDetailsCommand = new RelayCommand(ShowWorkoutDetails, CanExecuteWorkoutCommand);
+            RemoveWorkoutCommand = new RelayCommand(RemoveWorkout, CanExecuteWorkoutCommand);
             OpenUserDetailsCommand = new RelayCommand(OpenUserDetails);
             ShowAppInfoCommand = new RelayCommand(ShowAppInfo);
             SignOutCommand = new RelayCommand(SignOut);
             ApplyFilterCommand = new RelayCommand(ApplyFilter);
         }
 
-        // Funktion som hämtar träningspass baserat på användarroll
+        // Laddar träningspass för inloggad användare eller alla om användaren är AdminUser
         private void LoadWorkouts()
         {
             if (_userManager.CurrentPerson is AdminUser)
             {
-                // Om användaren är AdminUser, visa alla användares träningspass
                 FilteredWorkouts = new ObservableCollection<WorkOut>(
                     _userManager.GetAllUsers().SelectMany(user => user.Workouts));
             }
             else
             {
-                // Om användaren är vanlig User, visa bara den inloggade användarens träningspass
                 FilteredWorkouts = new ObservableCollection<WorkOut>(_userManager.CurrentPerson.Workouts);
             }
 
             OnPropertyChanged(nameof(FilteredWorkouts));
         }
-    
-    // Metod för att öppna AddWorkoutWindow
-    private void OpenAddWorkoutWindow(object parameter)
+
+        // Öppnar fönster för att lägga till nytt träningspass
+        private void OpenAddWorkoutWindow(object parameter)
         {
             var addWorkoutWindow = new AddWorkoutWindow(_userManager);
             addWorkoutWindow.ShowDialog();
         }
 
-        // Metod för att öppna WorkoutDetailsWindow om ett träningspass är markerat
-        private void OpenWorkoutDetails(object parameter)
-        {
-            if (SelectedWorkout == null)
-            {
-                MessageBox.Show("Vänligen välj ett träningspass först.", "Varning", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-            var detailsWindow = new WorkoutDetailsWindow(SelectedWorkout);
-            detailsWindow.Show();
-        }
-        // Metod för att visa detaljer för det markerade träningspasset
+        // Visar detaljer om markerat träningspass
         private void ShowWorkoutDetails(object parameter)
         {
             if (SelectedWorkout == null)
@@ -149,12 +150,12 @@ namespace FitnessTrack.ViewModel
                 return;
             }
 
-            // Skapa och visa WorkoutDetailsWindow om ett pass är markerat
-            var workoutDetailsWindow = new WorkoutDetailsWindow(SelectedWorkout);
+            // Skapa en ny instans av WorkoutDetailsWindow med UserManager och det markerade träningspasset
+            var workoutDetailsWindow = new WorkoutDetailsWindow(_userManager, SelectedWorkout);
             workoutDetailsWindow.Show();
         }
 
-        // Metod för att ta bort det markerade träningspasset
+        // Tar bort markerat träningspass
         private void RemoveWorkout(object parameter)
         {
             if (SelectedWorkout == null)
@@ -163,58 +164,50 @@ namespace FitnessTrack.ViewModel
                 return;
             }
 
-            // Om den inloggade användaren är AdminUser
             if (_userManager.CurrentPerson is AdminUser)
             {
-                // Hitta användaren som äger träningspasset och ta bort det från deras lista
                 var owner = _userManager.GetAllUsers().FirstOrDefault(user => user.Workouts.Contains(SelectedWorkout));
                 owner?.Workouts.Remove(SelectedWorkout);
             }
             else
             {
-                // Om det är en vanlig användare, ta bort träningspasset från deras egen lista
                 _userManager.CurrentPerson.Workouts.Remove(SelectedWorkout);
             }
 
-            // Uppdatera den visade listan
             FilteredWorkouts.Remove(SelectedWorkout);
             SelectedWorkout = null;
         }
-    
 
-        // Metod för att öppna UserDetailsWindow
+        // Öppnar användarens detaljvy
         private void OpenUserDetails(object parameter)
         {
             var userDetailsWindow = new UserDetailsWindow(_userManager);
             userDetailsWindow.Show();
         }
 
-        // Metod för att visa appinfo
+        // Visar app-information
         private void ShowAppInfo(object parameter)
         {
             var infoWindow = new InfoWindow();
-            infoWindow.ShowDialog();  // Öppna fönstret i dialogläge
+            infoWindow.ShowDialog();
         }
 
-        // Metod för att logga ut och stänga WorkoutWindow
+        // Loggar ut och återgår till huvudfönstret
         private void SignOut(object parameter)
         {
-            // Skapa huvudfönstret och skicka vidare UserManager
             var mainWindow = new MainWindow(_userManager);
             mainWindow.Show();
-
-            // Stäng WorkoutWindow
             Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is WorkoutWindow)?.Close();
         }
-    
 
-        // Filtreringslogik
+        // Filtrerar träningspass baserat på typ, datum, varaktighet och fritext
         private void ApplyFilter(object parameter = null)
         {
             var filtered = _userManager.CurrentPerson.Workouts.Where(workout =>
                 (string.IsNullOrEmpty(SelectedFilter) || SelectedFilter == "All" || workout.Type == SelectedFilter) &&
                 (!SelectedDateFilter.HasValue || workout.Date.Date == SelectedDateFilter.Value.Date) &&
-                (string.IsNullOrEmpty(FilterText) || workout.Type.Contains(FilterText, StringComparison.OrdinalIgnoreCase))
+                (string.IsNullOrEmpty(FilterText) || workout.Type.Contains(FilterText, StringComparison.OrdinalIgnoreCase)) &&
+                FilterByDuration(workout)
             ).ToList();
 
             FilteredWorkouts.Clear();
@@ -224,7 +217,19 @@ namespace FitnessTrack.ViewModel
             }
         }
 
-        // Kontrollera om ett träningspass är markerat
+        // Filtreringslogik för varaktighetsintervall
+        private bool FilterByDuration(WorkOut workout)
+        {
+            return SelectedDurationFilterOption switch
+            {
+                "< 30 min" => workout.Duration.TotalMinutes < 30,
+                "30-60 min" => workout.Duration.TotalMinutes >= 30 && workout.Duration.TotalMinutes <= 60,
+                "> 60 min" => workout.Duration.TotalMinutes > 60,
+                _ => true // "All" eller inget valt
+            };
+        }
+
+        // Kontroll om ett träningspass är markerat
         private bool CanExecuteWorkoutCommand(object parameter) => SelectedWorkout != null;
     }
 }

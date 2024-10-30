@@ -13,7 +13,7 @@ namespace FitnessTrack.Model
         {
         }
 
-        // Denna metod kan exempelvis hämta alla träningspass om UserManager skickas in
+        // Denna metod kan hämta alla träningspass om UserManager skickas in
         public List<WorkOut> ManageAllWorkouts(UserManager userManager)
         {
             List<WorkOut> allWorkouts = new List<WorkOut>();

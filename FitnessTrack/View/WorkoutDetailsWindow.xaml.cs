@@ -21,12 +21,10 @@ namespace FitnessTrack.View
     /// </summary>
     public partial class WorkoutDetailsWindow : Window
     {
-        public WorkoutDetailsWindow(WorkOut workout)
+        public WorkoutDetailsWindow(UserManager userManager, WorkOut workout)
         {
             InitializeComponent();
-
-            // Sätter DataContext till en instans av WorkoutDetailsWindowViewModel
-            DataContext = new WorkoutDetailsWindowViewModel(workout);
+            DataContext = new WorkoutDetailsWindowViewModel(userManager, workout);
         }
     }
 }
