@@ -7,7 +7,7 @@
         mc:Ignorable="d"
        Title="Login" Height="400" Width="450"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize"
-        Background="#D3D3D3">
+        Background="WhiteSmoke">
 
     <Window.Resources>
         <!-- Stil för rundade knappar -->
@@ -57,6 +57,7 @@
         <!-- Username TextBox -->
         <TextBox Width="250" Height="30" 
                  Text="{Binding Username, UpdateSourceTrigger=PropertyChanged}" 
+
                  HorizontalAlignment="Center" Grid.Row="2"/>
 
         <!-- Password text -->

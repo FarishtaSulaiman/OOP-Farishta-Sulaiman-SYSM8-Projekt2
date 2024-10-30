@@ -39,15 +39,15 @@
         <!-- Bakgrundsbild som täcker hela Grid -->
         <Image Source="/Bilder/löpare.jpg" 
                Stretch="Fill" 
-               Opacity="0.3" 
+               Opacity="0.8" 
                HorizontalAlignment="Stretch" 
                VerticalAlignment="Stretch"/>
 
         <!-- Titeltext centrerad -->
-        <TextBlock Text="FitTrack" FontSize="40" FontWeight="Bold" 
+        <TextBlock Text="FitnessTrack" FontSize="40" FontWeight="Bold" 
                    FontFamily="Arial" Foreground="#DC143C" 
                    HorizontalAlignment="Center" VerticalAlignment="Top" 
-                   Margin="0,40,0,0" Opacity="0.7"/>
+                   Margin="0" Opacity="0.7"/>
 
         <!-- Get Started-knapp med rundade hörn -->
         <Button Content="Get Started" Width="150" Height="40"
