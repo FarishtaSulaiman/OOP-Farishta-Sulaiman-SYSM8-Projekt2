@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace FitnessTrack.ViewModel
 {
@@ -158,7 +159,7 @@ namespace FitnessTrack.ViewModel
         {
             var mainWindow = new MainWindow(_userManager);
             mainWindow.Show();
-            Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is WorkoutWindow)?.Close();
+            System.Windows.Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is WorkoutWindow)?.Close();
         }
 
         private void ApplyFilter(object parameter = null)

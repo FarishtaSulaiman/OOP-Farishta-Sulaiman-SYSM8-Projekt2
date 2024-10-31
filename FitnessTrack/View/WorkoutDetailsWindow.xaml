@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessTrack.View"
         mc:Ignorable="d"
-   Title="Workout Details" Width="800" Height="600" Background="#2A2A2A"
+        Title="Workout Details" Width="800" Height="600" Background="#2A2A2A"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -47,14 +47,15 @@
 
         <!-- Sidomeny -->
         <StackPanel Background="#2A2A2A" Grid.Column="0" Grid.RowSpan="3" VerticalAlignment="Stretch">
-            <!-- Användarnamn högst upp i sidomenyn -->
-            <TextBlock Text="{Binding CurrentPerson.Username}" FontSize="18" FontWeight="SemiBold" 
-                       Foreground="White" Margin="10,20,10,10" TextAlignment="Center"/>
+            <TextBlock Text="Workout Details" FontSize="18" FontWeight="SemiBold" 
+                       Foreground="White" Margin="10,20,10,20" TextAlignment="Center"/>
 
-            <!-- Rundade knappar -->
+            <!-- Knappar -->
             <Button Content="Edit" Command="{Binding EditWorkoutCommand}" 
                     Style="{StaticResource RoundedButtonStyle}" Margin="10,5"/>
             <Button Content="Copy" Command="{Binding CopyWorkoutCommand}" 
+                    Style="{StaticResource RoundedButtonStyle}" Margin="10,5"/>
+            <Button Content="Save" Command="{Binding SaveWorkoutCommand}" 
                     Style="{StaticResource RoundedButtonStyle}" Margin="10,5"/>
             <Button Content="Cancel" Command="{Binding CancelCommand}" 
                     Style="{StaticResource RoundedButtonStyle}" Margin="10,5"/>
@@ -88,22 +89,23 @@
 
             <!-- Typ av träning -->
             <TextBlock Text="Type:" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
-            <ComboBox SelectedItem="{Binding SelectedWorkout.Type}" Grid.Row="1" Grid.Column="1" Margin="5" IsEnabled="{Binding IsEditable}">
+            <ComboBox SelectedValue="{Binding SelectedWorkout.Type, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Margin="5" IsEnabled="{Binding IsEditable}">
                 <ComboBoxItem Content="Cardio" />
                 <ComboBoxItem Content="Strength" />
             </ComboBox>
 
             <!-- Varaktighet -->
             <TextBlock Text="Duration:" Grid.Row="2" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
-            <TextBox Text="{Binding SelectedWorkout.Duration}" Grid.Row="2" Grid.Column="1" Margin="5" IsReadOnly="{Binding IsReadOnly}" />
+            <ComboBox ItemsSource="{Binding DurationOptions}" SelectedItem="{Binding SelectedDuration}" 
+                      Grid.Row="2" Grid.Column="1" Margin="5" IsEnabled="{Binding IsEditable}" />
 
             <!-- Distans -->
             <TextBlock Text="Distance (km):" Grid.Row="3" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
             <TextBox Text="{Binding SelectedWorkout.Distance}" Grid.Row="3" Grid.Column="1" Margin="5" IsReadOnly="{Binding IsReadOnly}" />
 
-            <!-- Reps -->
-            <TextBlock Text="Reps:" Grid.Row="4" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
-            <TextBox Text="{Binding SelectedWorkout.Reps}" Grid.Row="4" Grid.Column="1" Margin="5" IsReadOnly="{Binding IsReadOnly}" />
+            <!-- Repetitioner -->
+            <TextBlock Text="Repetitions:" Grid.Row="4" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
+            <TextBox Text="{Binding SelectedWorkout.Repetitions}" Grid.Row="4" Grid.Column="1" Margin="5" IsReadOnly="{Binding IsReadOnly}" />
 
             <!-- Kalorier -->
             <TextBlock Text="Calories:" Grid.Row="5" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
@@ -113,11 +115,5 @@
             <TextBlock Text="Notes:" Grid.Row="6" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
             <TextBox Text="{Binding SelectedWorkout.Notes}" Grid.Row="6" Grid.Column="1" Margin="5" TextWrapping="Wrap" Height="100" IsReadOnly="{Binding IsReadOnly}" />
         </Grid>
-
-        <!-- Save-knapp längst ner till höger -->
-        <Button Content="Save" Command="{Binding SaveWorkoutCommand}" 
-                Style="{StaticResource RoundedButtonStyle}" Width="70" Height="35" 
-                HorizontalAlignment="Right" VerticalAlignment="Bottom" 
-                Grid.Column="1" Grid.Row="2" Margin="0,0,20,20"/>
     </Grid>
 </Window>

@@ -57,7 +57,7 @@
         
         <StackPanel Background="#FAFAFA" Margin="220,20,20,20">
             <!-- Titel för översiktssektionen -->
-            <TextBlock Text="Workout Details" FontSize="24" FontWeight="Bold" 
+            <TextBlock Text="Workouts" FontSize="24" FontWeight="Bold" 
                        Foreground="#333" Margin="0,0,0,20" HorizontalAlignment="Center" />
 
             <!-- Filtersektion för att filtrera träningspass -->
