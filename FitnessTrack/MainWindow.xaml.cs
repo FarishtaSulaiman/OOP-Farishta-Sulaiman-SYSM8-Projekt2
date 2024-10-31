@@ -18,7 +18,6 @@ namespace FitnessTrack
     /// </summary>
     public partial class MainWindow : Window
     {
-
         public MainWindow(UserManager userManager)
         {
             InitializeComponent();
@@ -27,7 +26,7 @@ namespace FitnessTrack
             DataContext = new MainWindowViewModel(userManager);
         }
 
-        //hanterar förändringar i passwordbox behöver hanteras manuellt pga kan ej binda till string 
+        // Hanterar förändringar i PasswordBox eftersom bindning till string inte är direkt möjligt
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
             if (DataContext is MainWindowViewModel viewModel)

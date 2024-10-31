@@ -26,7 +26,7 @@ namespace FitnessTrack.ViewModel
         public ICommand RegisterCommand { get; }
 
         // Konstruktor som tar emot en UserManager-instans
-        public MainWindowViewModel(UserManager userManager)  
+        public MainWindowViewModel(UserManager userManager)
         {
             _userManager = userManager;
             SignInCommand = new RelayCommand(SignIn);
@@ -57,7 +57,7 @@ namespace FitnessTrack.ViewModel
                 workoutsWindow.Show();
 
                 // Stäng MainWindow
-                Application.Current.Windows[0]?.Close();
+                CloseCurrentWindow();
             }
             else
             {
@@ -104,7 +104,20 @@ namespace FitnessTrack.ViewModel
             registerWindow.Show();
 
             // Stäng MainWindow efter att ha öppnat RegisterWindow
-            Application.Current.Windows[0]?.Close();
+            CloseCurrentWindow();
+        }
+
+        // Hjälpmetod för att stänga MainWindow
+        private void CloseCurrentWindow()
+        {
+            foreach (Window window in Application.Current.Windows)
+            {
+                if (window is MainWindow)
+                {
+                    window.Close();
+                    break;
+                }
+            }
         }
     }
 }

@@ -10,17 +10,17 @@ namespace FitnessTrack.Model
     {
         public int Repetitions { get; set; }
 
-       
         public StrengthWorkout(DateTime date, string type, TimeSpan duration, int caloriesBurned, string notes, int repetitions)
             : base(date, type, duration, caloriesBurned, notes)
         {
             Repetitions = repetitions;
         }
 
-
+        // Överlagrad metod för att beräkna kalorier för Strength
         public override int CalculateCaloriesBurned()
         {
-            return CaloriesBurned + Repetitions * 2; // ett exempel på beräkning 
+            CaloriesBurned = Repetitions * 5; // Exempel: beräkna baserat på repetitioner
+            return CaloriesBurned;
         }
     }
 }

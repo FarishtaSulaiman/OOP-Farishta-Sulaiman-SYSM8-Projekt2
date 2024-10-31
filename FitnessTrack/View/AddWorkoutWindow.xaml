@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessTrack.View"
         mc:Ignorable="d"
-    Title="Add Workout" Width="800" Height="600" Background="#2A2A2A"
+       Title="Add Workout" Width="800" Height="600" Background="#2A2A2A"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -33,7 +33,6 @@
     </Window.Resources>
 
     <Grid>
-        <!-- Sidomeny och huvudinnehåll med Grid -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
@@ -44,7 +43,7 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Sidomeny med Save och Cancel-knappar -->
+        <!-- Sidomeny -->
         <StackPanel Background="#2A2A2A" Grid.Column="0" Grid.RowSpan="3" VerticalAlignment="Stretch">
             <TextBlock Text="Add New Workout" FontSize="18" FontWeight="SemiBold" 
                        Foreground="White" Margin="10,20,10,20" TextAlignment="Center"/>
@@ -54,20 +53,19 @@
                     Style="{StaticResource RoundedButtonStyle}" Margin="10,5"/>
         </StackPanel>
 
-        <!-- Titel i huvudinnehåll -->
+        <!-- Titel -->
         <StackPanel Grid.Column="1" Grid.Row="0" Background="#FAFAFA" Margin="20">
             <TextBlock Text="Enter Workout Details" FontSize="24" FontWeight="Bold" 
                        Foreground="#333" Margin="0,10,0,10" HorizontalAlignment="Center" />
         </StackPanel>
 
-        <!-- Inmatningsfält med etiketter i Grid-layout -->
+        <!-- Inmatningsfält -->
         <Grid Grid.Column="1" Grid.Row="1" Background="White" Margin="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
@@ -83,7 +81,9 @@
 
             <!-- Typ av träning -->
             <TextBlock Text="Type:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <ComboBox ItemsSource="{Binding WorkoutTypes}" SelectedItem="{Binding WorkoutType}" Grid.Row="1" Grid.Column="1" Margin="5"/>
+            <ComboBox ItemsSource="{Binding WorkoutTypes}" 
+                      SelectedItem="{Binding WorkoutType, Mode=TwoWay}" 
+                      Grid.Row="1" Grid.Column="1" Margin="5"/>
 
             <!-- Distance för Cardio -->
             <TextBlock Text="Distance (km):" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
@@ -93,9 +93,11 @@
             <TextBlock Text="Repetitions:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
             <TextBox Text="{Binding Repetitions}" Grid.Row="3" Grid.Column="1" Margin="5"/>
 
-            <!-- Varaktighet -->
-            <TextBlock Text="Duration (Filter):" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <ComboBox ItemsSource="{Binding DurationOptions}" SelectedItem="{Binding SelectedDuration}" Grid.Row="4" Grid.Column="1" Margin="5"/>
+            <!-- DurationFilter ComboBox -->
+            <TextBlock Text="Duration:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <ComboBox ItemsSource="{Binding DurationOptions}" 
+                      SelectedItem="{Binding SelectedDurationFilter}" 
+                      Grid.Row="4" Grid.Column="1" Margin="5"/>
 
             <!-- Kalorier brända -->
             <TextBlock Text="Calories Burned:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>

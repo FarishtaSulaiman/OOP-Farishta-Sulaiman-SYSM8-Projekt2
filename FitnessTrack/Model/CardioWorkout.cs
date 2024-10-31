@@ -10,16 +10,17 @@ namespace FitnessTrack.Model
     {
         public int Distance { get; set; }
 
-    
         public CardioWorkout(DateTime date, string type, TimeSpan duration, int caloriesBurned, string notes, int distance)
             : base(date, type, duration, caloriesBurned, notes)
         {
             Distance = distance;
         }
 
+        // Överlagrad metod för att beräkna kalorier för Cardio
         public override int CalculateCaloriesBurned()
         {
-            return CaloriesBurned + Distance * 5; // ett exempel på beräkning 
+            CaloriesBurned = Distance * 10; // Exempel: beräkna baserat på avstånd
+            return CaloriesBurned;
         }
     }
 }

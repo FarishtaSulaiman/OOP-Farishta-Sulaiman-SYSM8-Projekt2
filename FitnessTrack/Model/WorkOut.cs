@@ -14,15 +14,17 @@ namespace FitnessTrack.Model
         public int CaloriesBurned { get; set; }
         public string Notes { get; set; }
 
-        public WorkOut(DateTime date, string type, TimeSpan duration, int caloriesburned, string notes)
+        // Konstruktor med fem parametrar
+        public WorkOut(DateTime date, string type, TimeSpan duration, int caloriesBurned, string notes)
         {
             Date = date;
             Type = type;
             Duration = duration;
-            CaloriesBurned = caloriesburned;
+            CaloriesBurned = caloriesBurned;
             Notes = notes;
         }
 
+        // Abstrakt metod för att beräkna brända kalorier
         public abstract int CalculateCaloriesBurned();
     }
 }

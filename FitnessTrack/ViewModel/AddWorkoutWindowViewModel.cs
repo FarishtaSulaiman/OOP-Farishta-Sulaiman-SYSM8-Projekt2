@@ -17,21 +17,29 @@ namespace FitnessTrack.ViewModel
         private readonly UserManager _userManager;
 
         // Egenskaper för inmatningsfält
-        public DateTime? WorkoutDate { get; set; }
+        public DateTime? WorkoutDate { get; set; } = DateTime.Now;
         public string WorkoutType { get; set; }
-        public string CaloriesBurned { get; set; }
         public string WorkoutNotes { get; set; }
         public string Repetitions { get; set; }
         public string Distance { get; set; }
 
-        // Lista över träningstyper för ComboBox
+        private int _caloriesBurned;
+        public int CaloriesBurned
+        {
+            get => _caloriesBurned;
+            set
+            {
+                _caloriesBurned = value;
+                OnPropertyChanged(nameof(CaloriesBurned));
+            }
+        }
+
         public ObservableCollection<string> WorkoutTypes { get; } = new ObservableCollection<string> { "Cardio", "Strength" };
 
-        // Filter för varaktighet
+        // Duration-filter förval
         public ObservableCollection<string> DurationOptions { get; } = new ObservableCollection<string> { "< 30 min", "30-60 min", "> 60 min" };
-        public string SelectedDuration { get; set; }
+        public string SelectedDurationFilter { get; set; }
 
-        // Kommandon för att spara och avbryta
         public ICommand SaveWorkoutCommand { get; }
         public ICommand CancelCommand { get; }
 
@@ -42,75 +50,39 @@ namespace FitnessTrack.ViewModel
             CancelCommand = new RelayCommand(Cancel);
         }
 
-        // Metod för att tolka och konvertera varaktighet från DurationOptions
-        private double GetDurationFromFilter()
+        private TimeSpan GetDurationFromFilter()
         {
-            return SelectedDuration switch
+            return SelectedDurationFilter switch
             {
-                "< 30 min" => 20,
-                "30-60 min" => 45,
-                "> 60 min" => 90,
-                _ => 0
+                "< 30 min" => TimeSpan.FromMinutes(20),
+                "30-60 min" => TimeSpan.FromMinutes(45),
+                "> 60 min" => TimeSpan.FromMinutes(90),
+                _ => TimeSpan.Zero
             };
         }
 
-        // Metod för att spara träningspasset
         private void SaveWorkout(object parameter)
         {
-            // Kontrollera att alla obligatoriska fält är ifyllda
-            if (!WorkoutDate.HasValue || string.IsNullOrEmpty(WorkoutType) || string.IsNullOrEmpty(CaloriesBurned) || string.IsNullOrEmpty(WorkoutNotes) ||
-                (WorkoutType == "Cardio" && string.IsNullOrEmpty(Distance)) || (WorkoutType == "Strength" && string.IsNullOrEmpty(Repetitions)))
+            // Validering för att säkerställa att alla obligatoriska fält är ifyllda
+            if (!WorkoutDate.HasValue || string.IsNullOrEmpty(WorkoutType) || CaloriesBurned == 0 ||
+                string.IsNullOrEmpty(WorkoutNotes) || string.IsNullOrEmpty(SelectedDurationFilter))
             {
-                MessageBox.Show("Vänligen fyll i alla obligatoriska fält.", "Varning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Alla obligatoriska fält måste vara ifyllda.", "Fel", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // Kontrollera att kalorier är ett giltigt heltal
-            if (!int.TryParse(CaloriesBurned, out int calories))
-            {
-                MessageBox.Show("Kalorier måste vara ett giltigt heltal.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+            // Skapa ett nytt träningspass baserat på typen
+            WorkOut newWorkout = WorkoutType == "Cardio"
+                ? new CardioWorkout(WorkoutDate.Value, WorkoutType, GetDurationFromFilter(), CaloriesBurned, WorkoutNotes, int.TryParse(Distance, out var dist) ? dist : 0)
+                : new StrengthWorkout(WorkoutDate.Value, WorkoutType, GetDurationFromFilter(), CaloriesBurned, WorkoutNotes, int.TryParse(Repetitions, out var reps) ? reps : 0);
 
-            // Kontrollera och konvertera specifika fält för Cardio och Strength
-            WorkOut newWorkout;
-            double durationMinutes = GetDurationFromFilter();
-
-            if (WorkoutType == "Cardio")
-            {
-                if (!int.TryParse(Distance, out int cardioDistance))
-                {
-                    MessageBox.Show("Ange ett giltigt värde för Distance för Cardio-träning.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                newWorkout = new CardioWorkout(WorkoutDate.Value, WorkoutType, TimeSpan.FromMinutes(durationMinutes), calories, WorkoutNotes, cardioDistance);
-            }
-            else if (WorkoutType == "Strength")
-            {
-                if (!int.TryParse(Repetitions, out int strengthReps))
-                {
-                    MessageBox.Show("Ange ett giltigt värde för Repetitions för Strength-träning.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                newWorkout = new StrengthWorkout(WorkoutDate.Value, WorkoutType, TimeSpan.FromMinutes(durationMinutes), calories, WorkoutNotes, strengthReps);
-            }
-            else
-            {
-                MessageBox.Show("Ogiltig träningstyp. Välj 'Cardio' eller 'Strength'.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            // Lägg till träningspasset till den inloggade användarens lista
+            // Lägg till det nya träningspasset i användarens workout-lista
             _userManager.CurrentPerson.Workouts.Add(newWorkout);
-            MessageBox.Show("Träningspasset har sparats.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
 
-            // Stäng fönstret efter sparande
+            MessageBox.Show("Träningspasset har sparats.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
             Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is AddWorkoutWindow)?.Close();
         }
 
-        // Metod för att avbryta och stänga fönstret
         private void Cancel(object parameter)
         {
             Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is AddWorkoutWindow)?.Close();
