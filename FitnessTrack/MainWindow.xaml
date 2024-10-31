@@ -45,7 +45,7 @@
         </Grid.RowDefinitions>
 
         <!-- Titeltext -->
-        <TextBlock Text="FitTrack Login" FontSize="30" FontWeight="SemiBold"
+        <TextBlock Text="FitnessTrack Login" FontSize="30" FontWeight="SemiBold"
                    HorizontalAlignment="Center" VerticalAlignment="Top"
                    Foreground="#DC143C" Margin="0,20,0,30"/>
 
