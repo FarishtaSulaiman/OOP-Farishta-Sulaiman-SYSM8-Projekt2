@@ -24,7 +24,7 @@ namespace FitnessTrack.View
         public AddWorkoutWindow(UserManager userManager)
         {
             InitializeComponent();
-            DataContext = new AddWorkoutWindowViewModel(userManager);  
+            DataContext = new AddWorkoutWindowViewModel(userManager);
         }
     }
 }

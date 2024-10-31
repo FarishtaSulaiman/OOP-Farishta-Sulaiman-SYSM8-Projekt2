@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessTrack.View"
         mc:Ignorable="d"
-         Width="800" Height="600" Background="#2A2A2A"
+    Title="Add Workout" Width="800" Height="600" Background="#2A2A2A"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
@@ -72,6 +72,9 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
             <!-- Datumfält -->
@@ -80,22 +83,27 @@
 
             <!-- Typ av träning -->
             <TextBlock Text="Type:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <ComboBox SelectedItem="{Binding WorkoutType}" Grid.Row="1" Grid.Column="1" Margin="5">
-                <ComboBoxItem Content="Cardio"/>
-                <ComboBoxItem Content="Strength"/>
-            </ComboBox>
+            <ComboBox ItemsSource="{Binding WorkoutTypes}" SelectedItem="{Binding WorkoutType}" Grid.Row="1" Grid.Column="1" Margin="5"/>
+
+            <!-- Distance för Cardio -->
+            <TextBlock Text="Distance (km):" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Text="{Binding Distance}" Grid.Row="2" Grid.Column="1" Margin="5"/>
+
+            <!-- Repetitions för Strength -->
+            <TextBlock Text="Repetitions:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Text="{Binding Repetitions}" Grid.Row="3" Grid.Column="1" Margin="5"/>
 
             <!-- Varaktighet -->
-            <TextBlock Text="Duration (min):" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <TextBox Text="{Binding WorkoutDuration}" Grid.Row="2" Grid.Column="1" Margin="5"/>
+            <TextBlock Text="Duration (Filter):" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <ComboBox ItemsSource="{Binding DurationOptions}" SelectedItem="{Binding SelectedDuration}" Grid.Row="4" Grid.Column="1" Margin="5"/>
 
             <!-- Kalorier brända -->
-            <TextBlock Text="Calories Burned:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <TextBox Text="{Binding CaloriesBurned}" Grid.Row="3" Grid.Column="1" Margin="5"/>
+            <TextBlock Text="Calories Burned:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <TextBox Text="{Binding CaloriesBurned}" Grid.Row="5" Grid.Column="1" Margin="5"/>
 
             <!-- Anteckningar -->
-            <TextBlock Text="Notes:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" Margin="5"/>
-            <TextBox Text="{Binding WorkoutNotes}" Grid.Row="4" Grid.Column="1" Margin="5" 
+            <TextBlock Text="Notes:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Margin="5"/>
+            <TextBox Text="{Binding WorkoutNotes}" Grid.Row="6" Grid.Column="1" Margin="5" 
                      Height="100" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>
         </Grid>
     </Grid>

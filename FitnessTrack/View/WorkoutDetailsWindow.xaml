@@ -1,14 +1,15 @@
-﻿<!--<Window x:Class="FitnessTrack.View.WorkoutDetailsWindow"
+﻿<Window x:Class="FitnessTrack.View.WorkoutDetailsWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessTrack.View"
         mc:Ignorable="d"
-  Title="Workout Details" Width="800" Height="600" Background="#2A2A2A"
+   Title="Workout Details" Width="800" Height="600" Background="#2A2A2A"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
+        <!-- Stil för rundade knappar -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF5757" />
             <Setter Property="Foreground" Value="White" />
@@ -32,21 +33,26 @@
     </Window.Resources>
 
     <Grid>
+        <!-- Definiera kolumner och rader för layout -->
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="200"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        --><!-- Sidomeny --><!--
+        <!-- Sidomeny -->
         <StackPanel Background="#2A2A2A" Grid.Column="0" Grid.RowSpan="3" VerticalAlignment="Stretch">
+            <!-- Användarnamn högst upp i sidomenyn -->
             <TextBlock Text="{Binding CurrentPerson.Username}" FontSize="18" FontWeight="SemiBold" 
                        Foreground="White" Margin="10,20,10,10" TextAlignment="Center"/>
-            <Button Content="Edit" Command="{Binding EditCommand}" 
+
+            <!-- Rundade knappar -->
+            <Button Content="Edit" Command="{Binding EditWorkoutCommand}" 
                     Style="{StaticResource RoundedButtonStyle}" Margin="10,5"/>
             <Button Content="Copy" Command="{Binding CopyWorkoutCommand}" 
                     Style="{StaticResource RoundedButtonStyle}" Margin="10,5"/>
@@ -54,13 +60,13 @@
                     Style="{StaticResource RoundedButtonStyle}" Margin="10,5"/>
         </StackPanel>
 
-        --><!-- Huvudinnehåll --><!--
+        <!-- Huvudinnehåll -->
         <StackPanel Grid.Column="1" Grid.Row="0" Background="#FAFAFA" Margin="20">
             <TextBlock Text="Workout Details" FontSize="24" FontWeight="Bold" 
                        Foreground="#333" Margin="0,10,0,10" HorizontalAlignment="Center" />
         </StackPanel>
 
-        --><!-- Detaljer för träningspass med redigerbara fält --><!--
+        <!-- Redigerbara fält för träningspassdetaljer -->
         <Grid Grid.Column="1" Grid.Row="1" Background="White" Margin="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -76,42 +82,42 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <TextBlock Text="Date:" Grid.Row="0" Grid.Column="0" Margin="5"/>
-            <DatePicker SelectedDate="{Binding SelectedWorkout.Date}" Grid.Row="0" Grid.Column="1" 
-                        IsEnabled="{Binding IsEditable}" Margin="5"/>
+            <!-- Datumfält -->
+            <TextBlock Text="Date:" Grid.Row="0" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
+            <DatePicker SelectedDate="{Binding SelectedWorkout.Date}" Grid.Row="0" Grid.Column="1" Margin="5" IsEnabled="{Binding IsEditable}" />
 
-            <TextBlock Text="Type:" Grid.Row="1" Grid.Column="0" Margin="5"/>
-            <ComboBox SelectedItem="{Binding SelectedWorkout.Type}" Grid.Row="1" Grid.Column="1" 
-                      IsEnabled="{Binding IsEditable}" Margin="5">
-                <ComboBoxItem Content="Cardio"/>
-                <ComboBoxItem Content="Strength"/>
+            <!-- Typ av träning -->
+            <TextBlock Text="Type:" Grid.Row="1" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
+            <ComboBox SelectedItem="{Binding SelectedWorkout.Type}" Grid.Row="1" Grid.Column="1" Margin="5" IsEnabled="{Binding IsEditable}">
+                <ComboBoxItem Content="Cardio" />
+                <ComboBoxItem Content="Strength" />
             </ComboBox>
 
-            <TextBlock Text="Duration:" Grid.Row="2" Grid.Column="0" Margin="5"/>
-            <TextBox Text="{Binding SelectedWorkout.Duration}" Grid.Row="2" Grid.Column="1" 
-                     IsReadOnly="{Binding IsEditable, Converter={StaticResource InverseBooleanConverter}}" Margin="5"/>
+            <!-- Varaktighet -->
+            <TextBlock Text="Duration:" Grid.Row="2" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
+            <TextBox Text="{Binding SelectedWorkout.Duration}" Grid.Row="2" Grid.Column="1" Margin="5" IsReadOnly="{Binding IsReadOnly}" />
 
-            <TextBlock Text="Distance (km):" Grid.Row="3" Grid.Column="0" Margin="5"/>
-            <TextBox Text="{Binding SelectedWorkout.Distance}" Grid.Row="3" Grid.Column="1" 
-                     IsReadOnly="{Binding IsEditable, Converter={StaticResource InverseBooleanConverter}}" Margin="5"/>
+            <!-- Distans -->
+            <TextBlock Text="Distance (km):" Grid.Row="3" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
+            <TextBox Text="{Binding SelectedWorkout.Distance}" Grid.Row="3" Grid.Column="1" Margin="5" IsReadOnly="{Binding IsReadOnly}" />
 
-            <TextBlock Text="Reps:" Grid.Row="4" Grid.Column="0" Margin="5"/>
-            <TextBox Text="{Binding SelectedWorkout.Reps}" Grid.Row="4" Grid.Column="1" 
-                     IsReadOnly="{Binding IsEditable, Converter={StaticResource InverseBooleanConverter}}" Margin="5"/>
+            <!-- Reps -->
+            <TextBlock Text="Reps:" Grid.Row="4" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
+            <TextBox Text="{Binding SelectedWorkout.Reps}" Grid.Row="4" Grid.Column="1" Margin="5" IsReadOnly="{Binding IsReadOnly}" />
 
-            <TextBlock Text="Calories:" Grid.Row="5" Grid.Column="0" Margin="5"/>
-            <TextBox Text="{Binding SelectedWorkout.CaloriesBurned}" Grid.Row="5" Grid.Column="1" 
-                     IsReadOnly="{Binding IsEditable, Converter={StaticResource InverseBooleanConverter}}" Margin="5"/>
+            <!-- Kalorier -->
+            <TextBlock Text="Calories:" Grid.Row="5" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
+            <TextBox Text="{Binding SelectedWorkout.CaloriesBurned}" Grid.Row="5" Grid.Column="1" Margin="5" IsReadOnly="{Binding IsReadOnly}" />
 
-            <TextBlock Text="Notes:" Grid.Row="6" Grid.Column="0" Margin="5"/>
-            <TextBox Text="{Binding SelectedWorkout.Notes}" Grid.Row="6" Grid.Column="1" 
-                     IsReadOnly="{Binding IsEditable, Converter={StaticResource InverseBooleanConverter}}" Margin="5"/>
+            <!-- Anteckningar -->
+            <TextBlock Text="Notes:" Grid.Row="6" Grid.Column="0" Margin="5" VerticalAlignment="Center" Foreground="Black"/>
+            <TextBox Text="{Binding SelectedWorkout.Notes}" Grid.Row="6" Grid.Column="1" Margin="5" TextWrapping="Wrap" Height="100" IsReadOnly="{Binding IsReadOnly}" />
         </Grid>
 
-        --><!-- Save-knapp längst ner till höger --><!--
+        <!-- Save-knapp längst ner till höger -->
         <Button Content="Save" Command="{Binding SaveWorkoutCommand}" 
                 Style="{StaticResource RoundedButtonStyle}" Width="70" Height="35" 
                 HorizontalAlignment="Right" VerticalAlignment="Bottom" 
                 Grid.Column="1" Grid.Row="2" Margin="0,0,20,20"/>
     </Grid>
-</Window>-->
+</Window>
