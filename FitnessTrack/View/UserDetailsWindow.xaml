@@ -5,8 +5,74 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessTrack.View"
         mc:Ignorable="d"
-        Title="UserDetailsWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="User Details" Width="600" Height="500" Background="#2A2A2A"
+        WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style x:Key="RoundedButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FF5757" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="Padding" Value="8,4" />
+            <Setter Property="Height" Value="40"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="10" 
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+
+    <Grid Margin="20">
+        <!-- Layout för struktur -->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Current Username högst upp till vänster -->
+        <StackPanel Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0,0,0,20">
+            <TextBlock Text="Current Username:" FontWeight="SemiBold" Foreground="White" />
+            <TextBlock Text="{Binding CurrentUsername}" Foreground="White" />
+        </StackPanel>
+
+        <!-- Titel centralt ovanför inmatningsfälten -->
+        <TextBlock Text="User Details" FontSize="24" FontWeight="Bold" 
+                   Foreground="White" HorizontalAlignment="Center" 
+                   Grid.Row="0" Grid.Column="1" />
+
+        <!-- Inmatningsfälten i huvudsektionen -->
+        <StackPanel Grid.Row="1" Grid.ColumnSpan="2" VerticalAlignment="Top" HorizontalAlignment="Center" Width="300">
+            <TextBlock Text="New Username:" FontWeight="SemiBold" Foreground="White" Margin="0,10,0,5"/>
+            <TextBox Text="{Binding NewUsername}" Width="250" Height="30" Margin="0,5,0,10"/>
+
+            <TextBlock Text="New Password:" FontWeight="SemiBold" Foreground="White" Margin="0,10,0,5"/>
+            <PasswordBox x:Name="NewPasswordBox" Width="250" Height="30" Margin="0,5,0,10"/>
+
+            <TextBlock Text="Confirm Password:" FontWeight="SemiBold" Foreground="White" Margin="0,10,0,5"/>
+            <PasswordBox x:Name="ConfirmPasswordBox" Width="250" Height="30" Margin="0,5,0,10"/>
+
+            <TextBlock Text="New Country:" FontWeight="SemiBold" Foreground="White" Margin="0,10,0,5"/>
+            <ComboBox ItemsSource="{Binding Countries}" SelectedItem="{Binding NewCountry}" Width="250" Height="30" />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,20,0,0">
+            <Button Content="Save" Command="{Binding SaveCommand}" Style="{StaticResource RoundedButtonStyle}" Width="100" Margin="10,0"/>
+            <Button Content="Cancel" Command="{Binding CancelCommand}" Style="{StaticResource RoundedButtonStyle}" Width="100" Margin="10,0"/>
+        </StackPanel>
     </Grid>
 </Window>

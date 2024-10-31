@@ -19,14 +19,33 @@ namespace FitnessTrack.View
     /// <summary>
     /// Interaction logic for UserDetailsWindow.xaml
     /// </summary>
+
     public partial class UserDetailsWindow : Window
     {
-        public UserDetailsWindow(UserManager userManager)
-        {
-            InitializeComponent();
+            public UserDetailsWindow(UserManager userManager)
+            {
+                InitializeComponent();
+                DataContext = new UserDetailsWindowViewModel(userManager);
 
-            // Sätt DataContext om UserDetailsWindow använder MVVM
-            DataContext = new UserDetailsWindowViewModel(userManager); // Om en ViewModel finns
+                // Bindar PasswordBox lösenord till ViewModel
+                NewPasswordBox.PasswordChanged += OnNewPasswordChanged;
+                ConfirmPasswordBox.PasswordChanged += OnConfirmPasswordChanged;
+            }
+
+            private void OnNewPasswordChanged(object sender, RoutedEventArgs e)
+            {
+                if (DataContext is UserDetailsWindowViewModel viewModel)
+                {
+                    viewModel.NewPassword = NewPasswordBox.Password;
+                }
+            }
+
+            private void OnConfirmPasswordChanged(object sender, RoutedEventArgs e)
+            {
+                if (DataContext is UserDetailsWindowViewModel viewModel)
+                {
+                    viewModel.ConfirmPassword = ConfirmPasswordBox.Password;
+                }
+            }
         }
     }
-}
