@@ -9,7 +9,6 @@
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <!-- Stil för rundade knappar -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="White" />
             <Setter Property="Foreground" Value="Crimson" />
@@ -33,13 +32,10 @@
     </Window.Resources>
 
     <Grid>
-        <!-- Sidomeny för knappar och användarnamn -->
         <StackPanel Background="#2A2A2A" Width="200" VerticalAlignment="Stretch" HorizontalAlignment="Left">
-            <!-- Visar det inloggade användarens namn -->
             <TextBlock Text="{Binding CurrentPerson.Username}" FontSize="18" FontWeight="SemiBold" 
                        Foreground="White" Margin="10,20,10,10" TextAlignment="Center"/>
 
-            <!-- Knappar för att navigera i appen -->
             <Button Content="Add Workout" Command="{Binding OpenAddWorkoutWindowCommand}" 
                     Style="{StaticResource RoundedButtonStyle}" Margin="10,5"/>
             <Button Content="Details" Command="{Binding OpenWorkoutDetailsCommand}" 
@@ -54,35 +50,27 @@
                     Style="{StaticResource RoundedButtonStyle}" Margin="10,20,10,10"/>
         </StackPanel>
 
-        
         <StackPanel Background="#FAFAFA" Margin="220,20,20,20">
-            <!-- Titel för översiktssektionen -->
             <TextBlock Text="Workouts" FontSize="24" FontWeight="Bold" 
                        Foreground="#333" Margin="0,0,0,20" HorizontalAlignment="Center" />
 
-            <!-- Filtersektion för att filtrera träningspass -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10,0,10">
-                <!-- ComboBox för typfilter -->
                 <ComboBox ItemsSource="{Binding FilterOptions}" 
                           SelectedItem="{Binding SelectedFilter}" Width="100" Margin="0,0,10,0" />
-                <!-- DatePicker för datumfilter -->
                 <DatePicker SelectedDate="{Binding SelectedDateFilter}" Width="100" Margin="0,0,10,0"/>
-                <!-- TextBox för fritextfilter -->
                 <TextBox Width="100" Height="25" Margin="0,0,10,0" 
                          Padding="2" Background="White" Foreground="Black" BorderBrush="Gray" 
                          Text="{Binding FilterText}" />
-               
                 <ComboBox ItemsSource="{Binding DurationFilterOptions}" 
                           SelectedItem="{Binding SelectedDurationFilterOption}" Width="100" Margin="0,0,10,0"/>
-                <!-- Knapp för att tillämpa filtret -->
                 <Button Content="Apply Filter" Command="{Binding ApplyFilterCommand}" 
-                        Style="{StaticResource RoundedButtonStyle}" Width="100" Height="25"/>
+                        Style="{StaticResource RoundedButtonStyle}" Width="100" Height="25"
+                        IsEnabled="{Binding IsApplyFilterEnabled}"/>
             </StackPanel>
 
-            <!-- ListView för att visa träningspass -->
-            <ListView ItemsSource="{Binding FilteredWorkouts}" SelectedItem="{Binding SelectedWorkout}" 
+            <ListView ItemsSource="{Binding FilteredWorkouts}" 
                       Background="White" Foreground="Black" BorderBrush="Gray" BorderThickness="1"
-                      Margin="0,20,0,20" Padding="10">
+                      Margin="0,20,0,20" Padding="10" SelectedItem="{Binding SelectedWorkout}">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Date" DisplayMemberBinding="{Binding Date}" Width="120"/>

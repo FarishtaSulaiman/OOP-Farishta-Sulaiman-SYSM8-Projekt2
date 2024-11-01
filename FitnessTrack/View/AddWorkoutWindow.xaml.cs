@@ -21,18 +21,10 @@ namespace FitnessTrack.View
     /// </summary>
     public partial class AddWorkoutWindow : Window
     {
-        public AddWorkoutWindow(UserManager userManager)
+        public AddWorkoutWindow(UserManager userManager, Window workoutWindow)
         {
             InitializeComponent();
-            DataContext = new AddWorkoutWindowViewModel(userManager);
-        }
-
-        private void OnWorkoutTypeChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (DataContext is AddWorkoutWindowViewModel viewModel)
-            {
-                viewModel.OnWorkoutTypeChanged();
-            }
+            DataContext = new AddWorkoutViewModel(userManager, workoutWindow);
         }
     }
 }

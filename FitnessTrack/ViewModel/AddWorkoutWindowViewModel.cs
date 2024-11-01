@@ -12,130 +12,92 @@ using System.Collections.ObjectModel;
 
 namespace FitnessTrack.ViewModel
 {
-    public class AddWorkoutWindowViewModel : ViewModelBase
+    public class AddWorkoutViewModel : ViewModelBase
     {
         private readonly UserManager _userManager;
+        private readonly Window _workoutWindow; // Referens till WorkoutWindow
+       
 
-        // Egenskaper för inmatningsfält
-        public DateTime? WorkoutDate { get; set; }
-        public string WorkoutType { get; set; }
-        public string CaloriesBurned { get; set; }
-        public string WorkoutNotes { get; set; }
-        public string Repetitions { get; set; }
-        public string Distance { get; set; }
+        public string WorkoutType { get; set; }  // Typ av träningspass
+        public DateTime WorkoutDate { get; set; } = DateTime.Today; // Förinställt till dagens datum
+        public int Distance { get; set; }
+        public int Repetitions { get; set; }
         public string SelectedDuration { get; set; }
+        public int CaloriesBurned { get; set; }
+        public string WorkoutNotes { get; set; }
 
-        // Obligatoriska fältkontroller
-        private bool _isDistanceMandatory;
-        public bool IsDistanceMandatory
+        public ObservableCollection<string> WorkoutTypes { get; set; } = new ObservableCollection<string>
         {
-            get => _isDistanceMandatory;
-            set
-            {
-                _isDistanceMandatory = value;
-                OnPropertyChanged();
-            }
-        }
+            "Cardio", "Strength"
+        };
 
-        private bool _isRepetitionsMandatory;
-        public bool IsRepetitionsMandatory
+        public ObservableCollection<string> DurationOptions { get; set; } = new ObservableCollection<string>
         {
-            get => _isRepetitionsMandatory;
-            set
-            {
-                _isRepetitionsMandatory = value;
-                OnPropertyChanged();
-            }
-        }
+            "< 30 min", "30-60 min", "> 60 min"
+        };
 
-        // Lista över träningstyper för ComboBox
-        public ObservableCollection<string> WorkoutTypes { get; } = new ObservableCollection<string> { "Cardio", "Strength" };
-        public ObservableCollection<string> DurationOptions { get; } = new ObservableCollection<string> { "< 30 min", "30-60 min", "> 60 min" };
-
-        // Kommandon
         public ICommand SaveWorkoutCommand { get; }
         public ICommand CancelCommand { get; }
 
-        public AddWorkoutWindowViewModel(UserManager userManager)
+        public AddWorkoutViewModel(UserManager userManager, Window workoutWindow)
         {
             _userManager = userManager;
+            _workoutWindow = workoutWindow; // Spara referensen till WorkoutWindow
+
             SaveWorkoutCommand = new RelayCommand(SaveWorkout);
             CancelCommand = new RelayCommand(Cancel);
-
-            // Initiera med standardvärden
-            IsDistanceMandatory = false;
-            IsRepetitionsMandatory = false;
-        }
-
-        public void OnWorkoutTypeChanged()
-        {
-            // Uppdatera obligatoriska fält beroende på träningstyp
-            if (WorkoutType == "Cardio")
-            {
-                IsDistanceMandatory = true;
-                IsRepetitionsMandatory = false;
-            }
-            else if (WorkoutType == "Strength")
-            {
-                IsDistanceMandatory = false;
-                IsRepetitionsMandatory = true;
-            }
-
-            // Aktivera UI-uppdatering
-            OnPropertyChanged(nameof(IsDistanceMandatory));
-            OnPropertyChanged(nameof(IsRepetitionsMandatory));
-        }
-
-        private double GetDurationFromFilter()
-        {
-            return SelectedDuration switch
-            {
-                "< 30 min" => 20,
-                "30-60 min" => 45,
-                "> 60 min" => 90,
-                _ => 0
-            };
         }
 
         private void SaveWorkout(object parameter)
         {
-            if (WorkoutType == "Cardio" || WorkoutType == "Strength")
+            // Validering av inmatningarna
+            if (string.IsNullOrWhiteSpace(WorkoutType) ||
+                string.IsNullOrWhiteSpace(WorkoutNotes) ||
+                WorkoutDate == default ||
+                (WorkoutType == "Cardio" && (Distance <= 0 || CaloriesBurned <= 0 || string.IsNullOrWhiteSpace(SelectedDuration))) ||
+                (WorkoutType == "Strength" && (Repetitions <= 0 || CaloriesBurned <= 0 || string.IsNullOrWhiteSpace(SelectedDuration))))
             {
-                WorkOut newWorkout;
-                double durationMinutes = GetDurationFromFilter();
-
-                if (WorkoutType == "Cardio")
-                {
-                    if (!int.TryParse(Distance, out int cardioDistance))
-                    {
-                        MessageBox.Show("Ange ett giltigt värde för Distance för Cardio-träning.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                    newWorkout = new CardioWorkout(WorkoutDate.Value, WorkoutType, TimeSpan.FromMinutes(durationMinutes), int.Parse(CaloriesBurned), WorkoutNotes, cardioDistance);
-                }
-                else
-                {
-                    if (!int.TryParse(Repetitions, out int strengthReps))
-                    {
-                        MessageBox.Show("Ange ett giltigt värde för Repetitions för Strength-träning.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-                        return;
-                    }
-                    newWorkout = new StrengthWorkout(WorkoutDate.Value, WorkoutType, TimeSpan.FromMinutes(durationMinutes), int.Parse(CaloriesBurned), WorkoutNotes, strengthReps);
-                }
-
-                _userManager.CurrentPerson.Workouts.Add(newWorkout);
-                MessageBox.Show("Träningspasset har sparats.", "Information", MessageBoxButton.OK, MessageBoxImage.Information);
-                Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is AddWorkoutWindow)?.Close();
+                ShowRequiredFieldsMessage();
+                return;
             }
-            else
+
+            // Skapa ett nytt träningspass
+            WorkOut newWorkout = WorkoutType == "Cardio"
+                ? new CardioWorkout(WorkoutDate, WorkoutType, TimeSpan.FromMinutes(GetDuration()), CaloriesBurned, WorkoutNotes, Distance)
+                : new StrengthWorkout(WorkoutDate, WorkoutType, TimeSpan.FromMinutes(GetDuration()), CaloriesBurned, WorkoutNotes, Repetitions);
+
+            // Lägga till det nya träningspasset till användarens lista
+            _userManager.CurrentPerson.Workouts.Add(newWorkout);
+            MessageBox.Show("Träningspass sparat.");
+
+            // Skapa och visa en ny instans av WorkoutWindow
+            var workoutWindow = new WorkoutWindow(_userManager);
+            workoutWindow.Show(); // Visa WorkoutWindow
+                                  // Application.Current.Windows[0]?.Close(); // Stänger AddWorkoutWindow
+         
+
+        }
+
+        private void ShowRequiredFieldsMessage(string message = "Vänligen fyll i alla obligatoriska fält.")
+        {
+            MessageBox.Show(message, "Obligatoriska fält", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        private double GetDuration()
+        {
+            // Omvandla vald duration från string till minut
+            return SelectedDuration switch
             {
-                MessageBox.Show("Ogiltig träningstyp. Välj 'Cardio' eller 'Strength'.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                "< 30 min" => 15,
+                "30-60 min" => 45,
+                "> 60 min" => 75,
+                _ => 0
+            };
         }
 
         private void Cancel(object parameter)
         {
-            Application.Current.Windows.OfType<Window>().FirstOrDefault(w => w is AddWorkoutWindow)?.Close();
+            Application.Current.Windows[0]?.Close(); // Stänger fönstret utan att spara
         }
     }
 }

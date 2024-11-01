@@ -5,11 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:FitnessTrack.View"
         mc:Ignorable="d"
-        Title="Add Workout" Width="800" Height="600" Background="#2A2A2A"
+       Title="Add Workout" Width="800" Height="600" Background="#2A2A2A"
         WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
-        <!-- Stil för rundade knappar -->
         <Style x:Key="RoundedButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#FF5757" />
             <Setter Property="Foreground" Value="White" />
@@ -30,19 +29,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
-        <!-- Stil för obligatoriska fält -->
-        <Style x:Key="MandatoryFieldStyle" TargetType="TextBox">
-            <Setter Property="Background" Value="White"/>
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsDistanceMandatory}" Value="True">
-                    <Setter Property="Background" Value="#FFE4E1"/>
-                </DataTrigger>
-                <DataTrigger Binding="{Binding IsRepetitionsMandatory}" Value="True">
-                    <Setter Property="Background" Value="#FFE4E1"/>
-                </DataTrigger>
-            </Style.Triggers>
-        </Style>
     </Window.Resources>
 
     <Grid>
@@ -56,7 +42,6 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Sidomeny -->
         <StackPanel Background="#2A2A2A" Grid.Column="0" Grid.RowSpan="3" VerticalAlignment="Stretch">
             <TextBlock Text="Add New Workout" FontSize="18" FontWeight="SemiBold" 
                        Foreground="White" Margin="10,20,10,20" TextAlignment="Center"/>
@@ -66,13 +51,11 @@
                     Style="{StaticResource RoundedButtonStyle}" Margin="10,5"/>
         </StackPanel>
 
-        <!-- Titel -->
         <StackPanel Grid.Column="1" Grid.Row="0" Background="#FAFAFA" Margin="20">
             <TextBlock Text="Enter Workout Details" FontSize="24" FontWeight="Bold" 
                        Foreground="#333" Margin="0,10,0,10" HorizontalAlignment="Center" />
         </StackPanel>
 
-        <!-- Inmatningsfält -->
         <Grid Grid.Column="1" Grid.Row="1" Background="White" Margin="20">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
@@ -88,44 +71,28 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <!-- Datumfält -->
             <TextBlock Text="Date:" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
             <DatePicker SelectedDate="{Binding WorkoutDate}" Grid.Row="0" Grid.Column="1" Margin="5"/>
 
-            <!-- Typ av träning -->
             <TextBlock Text="Type:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
             <ComboBox ItemsSource="{Binding WorkoutTypes}" 
                       SelectedItem="{Binding WorkoutType, Mode=TwoWay}" 
-                      SelectionChanged="OnWorkoutTypeChanged" 
                       Grid.Row="1" Grid.Column="1" Margin="5"/>
 
-            <!-- Distance för Cardio -->
             <TextBlock Text="Distance (km):" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <TextBox Text="{Binding Distance}" 
-                     Grid.Row="2" Grid.Column="1" 
-                     Style="{StaticResource MandatoryFieldStyle}" 
-                     IsEnabled="{Binding IsDistanceMandatory}"
-                     Margin="5"/>
+            <TextBox Text="{Binding Distance}" Grid.Row="2" Grid.Column="1" Margin="5"/>
 
-            <!-- Repetitions för Strength -->
             <TextBlock Text="Repetitions:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
-            <TextBox Text="{Binding Repetitions}" 
-                     Grid.Row="3" Grid.Column="1" 
-                     Style="{StaticResource MandatoryFieldStyle}" 
-                     IsEnabled="{Binding IsRepetitionsMandatory}"
-                     Margin="5"/>
+            <TextBox Text="{Binding Repetitions}" Grid.Row="3" Grid.Column="1" Margin="5"/>
 
-            <!-- Duration -->
-            <TextBlock Text="Duration (Filter):" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
+            <TextBlock Text="Duration:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
             <ComboBox ItemsSource="{Binding DurationOptions}" 
                       SelectedItem="{Binding SelectedDuration}" 
                       Grid.Row="4" Grid.Column="1" Margin="5"/>
 
-            <!-- Kalorier brända -->
             <TextBlock Text="Calories Burned:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="5"/>
             <TextBox Text="{Binding CaloriesBurned}" Grid.Row="5" Grid.Column="1" Margin="5"/>
 
-            <!-- Anteckningar -->
             <TextBlock Text="Notes:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Margin="5"/>
             <TextBox Text="{Binding WorkoutNotes}" Grid.Row="6" Grid.Column="1" Margin="5" 
                      Height="100" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"/>

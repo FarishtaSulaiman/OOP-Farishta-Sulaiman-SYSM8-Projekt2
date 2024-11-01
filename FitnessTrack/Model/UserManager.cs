@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -9,19 +10,23 @@ namespace FitnessTrack.Model
 {
     public class UserManager
     {
-        private List<Person> _registeredPersons = new List<Person>(); // Ändrat från User till Person
+        private List<Person> _registeredPersons = new List<Person>(); // Lista för registrerade personer
 
         // Egenskap för att hålla koll på den inloggade personen (kan vara både User och AdminUser)
         public Person CurrentPerson { get; set; }
 
         public UserManager()
         {
-            // Skapat och lagt till en User och en AdminUser i programmet från start 
-            User defaultUser = new User("testUser", "Test123!", "Sverige", "Vad är ditt favoritdjur?", "hund");
-            AdminUser adminUser = new AdminUser("adminUser", "Admin123!", "Sverige", "Vad är ditt favoritdjur?", "katt");
+            // Skapa och lägga till en Admin-användare och en vanlig användare i programmet från start
+            AdminUser adminUser = new AdminUser("admin", "password", "Sverige", "Vad är ditt favoritdjur?", "katt");
+            User defaultUser = new User("user", "password", "Sverige", "Vad är ditt favoritdjur?", "hund");
 
 
-            // Lägger  till dem i listan över registrerade personer
+            // Lägg till träningspass för defaultUser
+            defaultUser.Workouts.Add(new CardioWorkout(DateTime.Now, "Cardio", TimeSpan.FromMinutes(30), 300, "Bra träning!", 5));
+            defaultUser.Workouts.Add(new StrengthWorkout(DateTime.Now, "Strength", TimeSpan.FromMinutes(45), 500, "Styrka träning!", 15));
+
+            // Lägg till dem i listan över registrerade personer
             _registeredPersons.Add(defaultUser);
             _registeredPersons.Add(adminUser);
         }
@@ -29,10 +34,8 @@ namespace FitnessTrack.Model
         // Metod för att validera lösenordet
         public bool IsPasswordValid(string password)
         {
-            // Kontrollera om lösenordet är minst 8 tecken, innehåller minst en siffra och ett specialtecken
-            return password.Length >= 8 &&
-                   Regex.IsMatch(password, @"[0-9]") &&          // Minst en siffra
-                   Regex.IsMatch(password, @"[\W_]");            // Minst ett specialtecken
+            // Om du vill tillåta "password" som giltigt lösenord kan du anpassa villkoren
+            return !string.IsNullOrEmpty(password); // Tillåt alla lösenord som inte är tomma
         }
 
         public void AddPerson(Person person)
@@ -65,6 +68,5 @@ namespace FitnessTrack.Model
         {
             return _registeredPersons.OfType<User>().ToList();
         }
-    
     }
 }

@@ -31,7 +31,7 @@ namespace FitnessTrack.ViewModel
 
         private readonly Action _onSuccess;
 
-        public VerificationWindowViewModel(string generatedCode, Action onSuccess)
+        public VerificationWindowViewModel(string? generatedCode, Action onSuccess)
         {
             GeneratedCode = generatedCode;  // Sätt den genererade koden för visning
             _onSuccess = onSuccess;
