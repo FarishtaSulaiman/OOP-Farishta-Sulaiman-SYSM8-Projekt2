@@ -16,6 +16,7 @@ namespace FitnessTrack.ViewModel
     {
         private readonly UserManager _userManager;
 
+
         // Egenskaper för inmatningsfält
         public DateTime? WorkoutDate { get; set; } = DateTime.Now;
         public string WorkoutType { get; set; }
@@ -89,3 +90,7 @@ namespace FitnessTrack.ViewModel
         }
     }
 }
+
+
+
+//skapa ett objekt av min workout new cardio = sen anropa calculatecalorie 

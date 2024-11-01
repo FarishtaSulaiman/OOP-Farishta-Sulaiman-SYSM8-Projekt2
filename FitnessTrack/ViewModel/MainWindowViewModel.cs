@@ -37,33 +37,40 @@ namespace FitnessTrack.ViewModel
         // Logik för Sign In-knappen
         private void SignIn(object parameter)
         {
-            // Kontrollera om användarnamn och lösenord är ifyllda
             if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
             {
                 MessageBox.Show("Fyll i både användarnamn och lösenord.", "Varning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
-            // Använd GetPersonByCredentials för att verifiera om användarnamn och lösenord stämmer
             var person = _userManager.GetPersonByCredentials(Username, Password);
 
             if (person != null)
             {
-                // Sätt inloggad person i UserManager
                 _userManager.CurrentPerson = person;
 
-                // Öppna WorkoutWindow och skicka med UserManager
-                var workoutsWindow = new WorkoutWindow(_userManager);
-                workoutsWindow.Show();
+                // Generera en 6-siffrig slumpmässig kod för 2FA
+                string generatedCode = new Random().Next(100000, 999999).ToString();
 
-                // Stäng MainWindow
-                CloseCurrentWindow();
+                // Öppna VerificationWindow med den genererade koden
+                var verificationWindow = new VerificationWindow
+                {
+                    DataContext = new VerificationWindowViewModel(generatedCode, () => CompleteLogin())
+                };
+                verificationWindow.ShowDialog();
             }
             else
             {
-                // Visa felmeddelande om inloggningen misslyckas
                 MessageBox.Show("Fel användarnamn eller lösenord.", "Fel", MessageBoxButton.OK, MessageBoxImage.Error);
             }
+        }
+
+        // Metod för att slutföra inloggning efter att 2FA-koden verifierats
+        private void CompleteLogin()
+        {
+            var workoutsWindow = new WorkoutWindow(_userManager);
+            workoutsWindow.Show();
+            CloseCurrentWindow();
         }
 
         // Logik för ForgotPassword-knappen med integrerad funktion för resetpassword 
