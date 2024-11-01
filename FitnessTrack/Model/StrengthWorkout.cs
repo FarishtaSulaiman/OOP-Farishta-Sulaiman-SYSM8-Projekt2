@@ -16,10 +16,10 @@ namespace FitnessTrack.Model
             Repetitions = repetitions;
         }
 
-        // Överlagrad metod för att beräkna kalorier för Strength
         public override int CalculateCaloriesBurned()
         {
-            CaloriesBurned = Repetitions * 5; // Exempel: beräkna baserat på repetitioner
+            // Exempel på kaloriberäkning för styrketräning baserat på duration och repetitions
+            CaloriesBurned = (int)(Repetitions * 0.5 * Duration.TotalMinutes);
             return CaloriesBurned;
         }
     }

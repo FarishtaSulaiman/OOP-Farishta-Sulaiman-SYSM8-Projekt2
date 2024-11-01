@@ -104,7 +104,7 @@ namespace FitnessTrack.ViewModel
         private void OpenAddWorkoutWindow(object parameter)
         {
             var addWorkoutWindow = new AddWorkoutWindow(_userManager);
-            addWorkoutWindow.Show();
+            addWorkoutWindow.ShowDialog();
         }
 
         private void ShowWorkoutDetails(object parameter)

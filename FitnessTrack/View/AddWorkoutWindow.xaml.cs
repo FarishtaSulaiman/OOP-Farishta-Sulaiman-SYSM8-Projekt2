@@ -26,5 +26,13 @@ namespace FitnessTrack.View
             InitializeComponent();
             DataContext = new AddWorkoutWindowViewModel(userManager);
         }
+
+        private void OnWorkoutTypeChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (DataContext is AddWorkoutWindowViewModel viewModel)
+            {
+                viewModel.OnWorkoutTypeChanged();
+            }
+        }
     }
 }
